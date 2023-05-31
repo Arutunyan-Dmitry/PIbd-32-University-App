@@ -1,0 +1,170 @@
+﻿@using UniversityContracts.ViewModels;
+@model (List<PlanViewModel> plans, Dictionary<int, string> disciplines)
+@{
+    ViewData["Title"] = "План обучения";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div>
+    <img src="/images/plan-left-img.png" class="img-thumbnail" />
+    <div class="d-inline-flex ml-5 p-2" style="max-width: 65vh; vertical-align: top;">
+        <div>
+            <h1 class="fw-bold mb-5 mt-3">План обучения</h1>
+            <h2 class="fw-bold mb-4">Легко распределяйте свою работу!</h2>
+            <p class="text-break fs-4">
+                Здесь вы можете добавить, редактировать
+                или удалить задания на определённых
+                занятиях.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center mt-5">
+    <div id="solidFooterLine" class="mid-solid-line"></div>
+</div>
+<div class="d-flex justify-content-center mt-2 mb-4">
+    <div id="normalFooterLine" class="mid-normal-line"></div>
+</div>
+
+<div class="d-flex justify-content-center">
+    <div class="discipline-links d-flex justify-content-around flex-wrap mt-5">
+        @{
+            if (Model.disciplines.Count() == 0)
+            {
+                <p class="text-center">
+                    Хм, похоже мы не нашли никакой информации о том,
+                    что вы ведёте какие либо предметы. Обратитесь на кафедру, если вы уверены
+                    что ведёте хоть что-то
+                </p>
+            }
+            else
+            {
+                foreach (var item in Model.disciplines)
+                {
+                    if (Model.plans.Count != 0)
+                    {
+                        if (Model.plans[0].DisciplineId == item.Key)
+                        {
+                            <a asp-action="Plan" asp-route-disciplineId="@item.Key" class="link-danger fs-5">@item.Value</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Plan" asp-route-disciplineId="@item.Key" class="link-primary fs-5">@item.Value</a>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-action="Plan" asp-route-disciplineId="@item.Key" class="link-primary fs-5">@item.Value</a>
+                    }
+                }
+            }
+        }
+    </div>
+</div>
+
+<div class="container-sm lessons-border mt-5 mb-5 pb-4">
+    <div>
+        <!--Dates with lessons-->
+        @{
+
+            if (Model.plans.Count() == 0)
+            {
+                <p class="text-center mt-4">
+                    У вас пока что нет учебных планов, дождитесь, поа их назначат вам на кафедре
+                </p>
+            }
+            else
+            {
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    @for (int i = 0; i < Model.plans.Count(); i++)
+                    {
+                        <!--Plans-->
+                        <div class="accordion-item">
+                            <div class="d-flex justify-content-between flex-wrap mt-4">
+                                <h1 class="fs-5 flex-grow-5 accordion-header">
+                                    <button class="accordion-button collapsed h-lesson" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse@(i)" aria-expanded="true" aria-controls="panelsStayOpen-collapse@(i)">
+                                        @(i + 1). “@Model.plans[i].Name”
+                                    </button>
+                                </h1>
+                                <a asp-action="Testing" asp-route-groupId="@Model.plans[i].GroupId" asp-route-planId="@Model.plans[i].Id" class="fs-4 text-center flex-grow-1 a-lesson">
+                                    <i class="fa-sharp fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                            @if (@Model.plans[i].Testings != null)
+                            {
+                                <div id="panelsStayOpen-collapse@(i)" class="accordion-collapse collapse">
+                                    @{
+                                        int j = 0;
+                                    }
+                                    @foreach (var item in @Model.plans[i].Testings)
+                                    {
+                                        j++;
+                                        <!--Tasks of particular plan-->
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div class="vw-50">
+                                                <div class="testing mt-1">
+                                                    <p class="testing-item mt-2">Задание @j</p>
+                                                    <p class="testing-item">Тема: @item.Item2</p>
+                                                    <p class="testing-item">Часы: @item.Item3</p>
+                                                    <p class="testing-item">Дата: @item.Item4.ToShortDateString()</p>
+                                                </div>
+                                                <a asp-action="Testing" asp-route-groupId="@Model.plans[i].GroupId" asp-route-planId="@Model.plans[i].Id" asp-route-testingId="@item.Item1" class="btn btn-primary bth-update mt-2" role="button">Редактировать</a>
+                                                <!-- Deleting -->
+                                                <div class="modal fade" id="Modal-@item.Item1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Удалить задание</h1>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Вы действительно хотите удалить это задание?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                                                <a asp-action="DeleteTesting" asp-route-id="@item.Item1" type="button" class="btn btn-primary">Удалить</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a data-bs-toggle="modal" data-bs-target="#Modal-@item.Item1" class="btn btn-primary bth-delete mt-2" role="button">Удалить</a>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/js/Plan-page.js"></script>
+}

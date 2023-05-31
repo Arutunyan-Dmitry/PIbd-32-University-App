@@ -1,0 +1,206 @@
+﻿body {
+    font-family: "Montserrat"
+}
+
+.img-thumbnail {
+    border: none;
+}
+
+.mid-solid-line {
+    width: 70%;
+    height: 1vh;
+    background-color: #7F71F0;
+}
+
+.mid-normal-line {
+    width: 50%;
+    height: 1vh;
+    background-color: #DACCFF;
+}
+
+.short-solid-line {
+    width: 70vh;
+    height: 1vh;
+    background-color: #7F71F0;
+}
+
+.msg-border-violet {
+    border: 0.5rem solid #DACCFF;
+    width: 80%;
+}
+
+.footer {
+    background-color: #a1a1a1;
+    color: white;
+}
+
+.discipline-links {
+    width: 100vh
+}
+
+.lessons-border {
+    border: 0.3rem solid #464FEC;
+}
+
+.flex-grow-5 {
+    flex-grow: 5;
+}
+
+.h-lesson {
+    background-color: #DDE8FE;
+}
+
+.a-lesson {
+    margin-left: 1%;
+    background-color: #464FEC;
+    color: white;
+    margin-bottom: 0.5rem;
+    border: 0.3rem solid #464FEC;
+    transition: all 0.3s;
+}
+    .a-lesson:hover {
+        border: 0.3rem solid #464FEC;
+        color: #464FEC;
+        background-color: white;
+        transition: all 0.3s;
+    }
+
+.vw-50 {
+    width: 55vh;
+}
+
+.testing {
+    border: 0.3rem solid #464FEC;
+}
+
+.testing-item {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.bth-update {
+    border: 0.15rem solid #464FEC;
+    background-color: #464FEC;
+}
+    .bth-update:hover {
+        border: 0.15rem solid #464FEC;
+        background-color: white;
+        color: #464FEC;
+    }
+.bth-delete {
+    border: 0.15rem solid #FA7167;
+    background-color: #FA7167;
+}
+    .bth-delete:hover {
+        border: 0.15rem solid #FA7167;
+        background-color: white;
+        color: #FA7167;
+    }
+
+.bth-find {
+    border: 0.15rem solid #7F71F0;
+    background-color: #7F71F0;
+}
+    .bth-find:hover {
+        border: 0.15rem solid #7F71F0;
+        background-color: white;
+        color: #7F71F0;
+    }
+
+.border-violet {
+    border: 0.4rem solid #7F71F0;
+}
+
+.w-80 {
+    max-width: 80vh;
+}
+
+.light-violet {
+    color: white;
+    background-color: #DACCFF;
+}
+
+.h-testing {
+    background-color: #DACCFF;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    margin-bottom: 0;
+}
+
+.a-testing {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    text-decoration: none;
+    background-color: #7F71F0;
+    color: white;
+    border: 0.15rem solid #7F71F0;
+    transition: all 0.3s;
+}
+
+    .a-testing:hover {
+        border: 0.15rem solid #7F71F0;
+        color: #7F71F0;
+        background-color: white;
+        transition: all 0.3s;
+    }
+
+.vw-60 {
+    width: 50vh;
+}
+
+.vw-80 {
+    width: 80vh;
+}
+
+.msg-active {
+    margin: 1rem;
+    padding-left: 1rem;
+    color: white;
+    font-weight: bold;
+    background-color: #FF735C;
+    border: 0.15rem solid #FF735C;
+    border-radius: 1rem;
+}
+
+.msg-checking {
+    margin: 1rem;
+    padding-left: 1rem;
+    color: white;
+    font-weight: bold;
+    background-color: #1A2E35;
+    border: 0.15rem solid #1A2E35;
+    border-radius: 1rem;
+}
+
+.msg-done {
+    margin: 1rem;
+    padding-left: 1rem;
+    color: white;
+    font-weight: bold;
+    background-color: #CCCDCE;
+    border: 0.15rem solid #CCCDCE;
+    border-radius: 1rem;
+}
+
+.border-asphalt {
+    border: 0.4rem solid #1A2E35;
+}
+
+.light-grey {
+    color: white;
+    background-color: #CCCDCE;
+}
+
+.a-msg {
+    text-decoration: none;
+    background-color: #1A2E35;
+    color: white;
+    border: 0.15rem solid #1A2E35;
+    transition: all 0.3s;
+}
+    .a-msg:hover {
+        border: 0.15rem solid #1A2E35;
+        color: #1A2E35;
+        background-color: white;
+        transition: all 0.3s;
+    }

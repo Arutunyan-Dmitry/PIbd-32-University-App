@@ -1,0 +1,97 @@
+﻿@using UniversityContracts.Enums;
+@using UniversityContracts.ViewModels;
+@model (int groupId, int planId, TestingViewModel testing)
+@{
+    Layout = "_Simp_Layout";
+    ViewData["Title"] = "Добавление и редактирование задания";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        if (ViewData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="max-width: 50vh;">
+                @ViewData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+}
+
+<div class="mb-4 text-center">
+    @{
+        if (Model.testing.Id != null)
+        {
+            <h1>Редактировать задание</h1>
+        }
+        else
+        {
+            <h1>Добавить задание</h1>
+        }
+    }
+
+</div>
+<form asp-action="UpdateTesting" method="post">
+    @{
+        <input type="hidden" name="PlanId" value="@Model.planId" />
+        <input type="hidden" name="GroupId" value="@Model.groupId" />
+        if (Model.testing.Id != null)
+        {
+            <input type="hidden" name="Id" value="@Model.testing.Id" />
+        }
+        <div class="mb-3">
+            <label for="basic-url" class="form-label">Введите тему задания</label>
+            <input class="form-control" type="text" name="Topic" placeholder="Тема" value="@Model.testing.Topic" required />
+        </div>
+        <div class="mb-3">
+            <label for="basic-url" class="form-label">Выберите дату задания</label>
+            @if (Model.testing.Id == null)
+            {
+                <input class="form-control" type="date" name="Date" required />
+            } else
+            {
+                <input class="form-control" type="date" name="Date" value="@(Model.testing.Date.Date.ToString("yyyy-MM-dd"))" required />
+            }
+        </div>
+        <div class="mb-3">
+
+            <label for="basic-url" class="form-label">Выберите продолжительность задания</label>
+            <input class="form-control" type="number" name="Hours" value="@Model.testing.Hours" required />
+        </div>
+        @if (Model.testing.Id != null)
+        {
+            <input type="submit" class="btn btn-primary" value="Редактировать" />
+        }
+        else
+        {
+            <input type="submit" class="btn btn-primary" value="Добавить" />
+        }
+        <a style="margin-left: 3%" asp-action="Plan">Назад</a>
+    }
+</form>
+
+@section scripts {
+    <script src="~/js/Testing-page.js"></script>
+}

@@ -1,0 +1,54 @@
+﻿@{ 
+    Layout = "_SignUp_Layout";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    } 
+    else
+    {
+        if (ViewData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="max-width: 50vh;">
+                @ViewData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+}
+<div class="mb-4">
+    <img src="/images/signup-img.png" class="rounded mx-auto d-block">
+</div>
+<div class="mb-4 text-center">
+    <h1>Войти</h1>
+</div>
+<form asp-action="TeacherSignUp" method="post">
+    <div class="mb-3">
+        <label for="basic-url" class="form-label">Введите логин</label>
+        <input class="form-control" type="text" name="Login" placeholder="Логин" required />
+    </div>
+    <div class="mb-3">
+        <label for="basic-url" class="form-label">Введите пароль</label>
+        <input class="form-control" type="password" name="Password" placeholder="Пароль" required />
+    </div>
+    <input type="submit" class="btn btn-primary" value="Войти" />
+</form>

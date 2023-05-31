@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="back_img.png" />
+    <None Remove="icon_add.png" />
+    <None Remove="icon_back.png" />
+    <None Remove="icon_back_upd.png" />
+    <None Remove="icon_del.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
+    <PackageReference Include="Unity" Version="5.11.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UniversityContracts\UniversityContracts.csproj" />
+    <ProjectReference Include="..\DepartmentHTTPClient\DepartmentHTTPClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="back_img.png" />
+    <Resource Include="icon_add.png" />
+    <Resource Include="icon_back.png" />
+    <Resource Include="icon_back_upd.png" />
+    <Resource Include="icon_del.png" />
+  </ItemGroup>
+
+</Project>

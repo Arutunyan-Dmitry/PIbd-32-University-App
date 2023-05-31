@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - University</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/0550389aeb.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="upper-line"></div>
+        <div id="navLine" class="line"></div>
+    </header>
+
+    <div class="d-flex align-items-center d-flex justify-content-center" style="min-height: 100vh;">
+        <div class="bg-light" style="padding: 2% 5% 5% 5%; width: 120vh;">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <footer class="border-top footer pb-5">
+        <div class="container-sm">
+            <h1 class="text-center fs-4 mb-3 mt-4">2023 - TeacherApp</h1>
+            <div class="d-flex justify-content-center mt-2 mb-4">
+                <div class="mid-solid-line"></div>
+            </div>
+            <p class="mb-1 mt-1 text-center">
+                Образование – это незаменимая составляющая нашей жизни.
+                Оно даёт возможность расширять свои знания, развивать личность и
+                достигать новых вершин. На сайте мы собрали для вас полезную
+                информацию о различных образовательных программах и курсах,
+                которые помогут вам реализовать свой потенциал. Мы верим, что
+                образование – лучший способ инвестировать в себя и своё будущее
+            </p>
+            <div class="d-flex justify-content-center mt-4 mb-4">
+                <div class="mid-normal-line"></div>
+            </div>
+            <p class="mb-0">Поддержите нас</p>
+            <a href="https://www.youtube.com/watch?v=rXbPAT62hSs">Поддержать тут</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

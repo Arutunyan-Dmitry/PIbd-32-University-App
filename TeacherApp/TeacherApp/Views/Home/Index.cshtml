@@ -1,0 +1,150 @@
+﻿@using UniversityContracts.Enums;
+@using UniversityContracts.ViewModels;
+@model (string naming, string flm, List<MessageViewModel> message, List<Tuple<int, string, int, DateTime>> testing)
+@{
+    ViewData["Title"] = "Главная";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<div>
+    <img src="/images/top-left-img.png" class="img-thumbnail" />
+    <div class="d-inline-flex p-2" style="max-width: 65vh; vertical-align: top;">
+        <div>
+            <h1 class="fw-bold mb-5 mt-3">Кафедра "@Model.naming"</h1>
+            <h2 class="fw-bold mb-4">Добро пожаловать "@Model.flm"</h2>
+            <p class="text-break fs-4">
+                Начнём образовательную деятельность
+                вместе, без лишних проблем и забот
+                об отчётностях и дедлайнах.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    <div class="mid-solid-line"></div>
+</div>
+<div class="d-flex justify-content-center mt-2 mb-4">
+    <div class="mid-normal-line"></div>
+</div>
+
+<h1 class="fw-bold mb-2 mt-5">Поручения от кафедры</h1>
+<div class="d-flex justify-content-lg-start mt-2 mb-5">
+    <div class="short-solid-line"></div>
+</div>
+<div class="align-content-end mt-5 mb-5">
+    <div class="d-flex flex-row justify-content-end">
+        <div class="msg-border-violet d-flex flex-wrap justify-content-center">
+            @{
+                if (Model.message.Count() == 0)
+                {
+                    <h1 class="text-center fs-5 mb-3 mt-2">У вас пока что нет поручений</h1>
+                }
+                else
+                {
+                    var length = 2;
+                    if (Model.message.Count() < length)
+                    {
+                        length = Model.message.Count();
+                    }
+                    for (int i = 0; i < length; i++)
+                    {
+                        <div class="m-3 border-violet d-flex flex-column" style="width: 60vh;">
+                            <p class="fw-bold fs-4 w-100 light-violet text-center">Поручение @(i+1)</p>
+                            @if (Model.message[i].ReportType == ReportTypes.SumReport)
+                            {
+                                <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                                    Тип отчёта: "Итоговый отчёт по дисциплине"
+                                </p>
+                                <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                                    Дисциплина "@Model.message[i].DisciplineName"
+                                </p>
+                            }
+                            @if (Model.message[i].ReportType == ReportTypes.PlanReport)
+                            {
+                                <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                                    Тип отчёта: "Отчёт по занятию"
+                                </p>
+                                <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                                    Занятие "@Model.message[i].PlanName"
+                                </p>
+                            }
+                            <p class="msg-active" style="margin-left: 0.25rem; margin-right: 0.25rem; margin-top:auto; background-color: #FDC83E;">
+                                Статус "Активен"
+                            </p>
+                        </div>
+                    }
+                    <div style="margin-bottom: 3%" class="text-center w-100">
+                        <a class="fs-5" asp-action="Reports">Больше</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<h1 class="fw-bold mb-2 mt-5">Занятия сегодня</h1>
+<div class="d-flex justify-content-lg-start mt-2 mb-5">
+    <div class="short-solid-line"></div>
+</div>
+<div class="align-content-end mt-5 mb-5">
+    <div class="d-flex flex-row justify-content-end">
+        <div class="msg-border-violet d-flex flex-wrap justify-content-center">
+            @{
+                if (Model.testing.Count() == 0)
+                {
+                    <h1 class="text-center fs-5 mb-3 mt-2">Сегодня нет никаких занятий!</h1>
+                }
+                else
+                {
+                    var length = 2;
+                    if (Model.testing.Count() < length)
+                    {
+                        length = Model.testing.Count();
+                    }
+                    for (int i = 0; i < length; i++)
+                    {
+                        <div class="m-3 border-violet" style="width: 60vh;">
+                            <p class="fw-bold fs-4 w-100 light-violet text-center">Занятие @(i + 1)</p>
+                            <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                                Тема "@Model.testing[i].Item2"
+                            </p>
+                            <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                                Часы "@Model.testing[i].Item3"
+                            </p>
+                        </div>
+                    }
+                    <div style="margin-bottom: 3%" class="text-center w-100">
+                        <a class="fs-5" asp-action="Plans">Больше</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/js/index-page.js"></script>
+}

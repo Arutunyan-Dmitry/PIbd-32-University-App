@@ -1,0 +1,106 @@
+﻿@using UniversityContracts.ViewModels;
+@model (ReportFullViewModel model, int id)
+@{
+    ViewData["Title"] = "Отчёт по дисциплине";
+    Layout = "_Blank_Layout";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    if (ViewData["Success"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop1").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #b5ffb0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Выполнено</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["Success"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<a class="btn btn-primary bth-find mt-4" role="button" asp-action="SaveFullReport" asp-route-messageId="@Model.id">Сохранить</a>
+<a class="btn btn-primary bth-find mt-4" role="button" asp-action="SendReportByMail" asp-route-messageId="@Model.id">Отправить на проверку</a>
+<div class="container-sm" style="min-height: 100vh;">
+    <h1 class="text-center fs-4 fw-bold" style="margin-bottom: 5%; margin-top: 5%">@Model.model.Title</h1>
+    <h1 class="fs-5" style="margin-bottom: 3%; margin-top: 3%">Дисциплина: @Model.model.DisciplineName</h1>
+    @{
+        foreach (var group in Model.model.Items)
+        {
+            <h1 class="mt-4 fs-5">Группа: @group.Item1</h1>
+            <table class="table table-bordered border-dark border-3">
+                <tr>
+                    @{
+                        <th rowspan="2" class="text-center">ФИО</th>
+                        for (int i = 0; i < group.Item2[0].Item2.Count(); i++)
+                        {
+                            <th class="text-center" colspan="@group.Item2[0].Item2[i].Item2.Count()">@group.Item2[0].Item2[i].Item1</th>
+                        }
+                    }
+                </tr>
+                <tr>
+                    @{
+                        foreach(var subitem in group.Item2[0].Item2)
+                        {
+                            foreach (var subitem2 in subitem.Item2)
+                            {
+                                <th class="text-end">@subitem2.Item1</th>
+                            }
+                        }
+                    }
+                </tr>
+                @{
+                    foreach(var subItem in group.Item2)
+                    {
+                        <tr>
+                        <td> @subItem.Item1</td>
+                            @foreach(var subItem2 in subItem.Item2)
+                            {
+                                @foreach (var subItem3 in subItem2.Item2)
+                                {
+                                    <td class="text-end">@subItem3.Item2</td>
+                                }
+                        }
+                        </tr>
+                    }
+                }
+            </table>
+        }
+    }
+    <p class="fs-5" style="margin-bottom: 1%; margin-top: 5%">@Model.model.Footer</p>
+    <p class="fs-5" style="margin-bottom: 5%;">@DateTime.Now.ToShortDateString()</p>
+    <a asp-action="Reports">Вернуться к сообщениям</a>
+</div>

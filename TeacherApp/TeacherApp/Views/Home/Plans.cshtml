@@ -1,0 +1,145 @@
+﻿@using UniversityContracts.Enums;
+@using UniversityContracts.ViewModels;
+@model (List<PlanViewModel> plans, int numOfPage, int page)
+@{
+    ViewData["Title"] = "Задания и оценки";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div>
+    <img src="/images/lesson-left-img.png" class="img-thumbnail" />
+    <div class="d-inline-flex ml-5 p-2" style="max-width: 65vh; vertical-align: top;">
+        <div>
+            <h1 class="fw-bold mb-5 mt-3">Занятия и оценки</h1>
+            <h2 class="fw-bold mb-4">Оценивайте студентов в своё удовольствие!</h2>
+            <p class="text-break fs-4">
+                Здесь вы можете найти определённое занятие,
+                воспользовавшись формой поиска и
+                оценить студентов, выполнивших задания
+                на этом занятии.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center mt-5">
+    <div id="solidFooterLine" class="mid-solid-line"></div>
+</div>
+<div class="d-flex justify-content-center mt-2 mb-5">
+    <div id="normalFooterLine" class="mid-normal-line"></div>
+</div>
+
+<h1 class="fw-bold m-5">Найти занятие</h1>
+<div class="m-3 p-3 border-violet w-80">
+    <form asp-action="FindPlan" method="get">
+        <div class="mb-3">
+            <label for="basic-url" class="form-label">Выберите тип занятия</label>
+            <select class="form-select" asp-items="@Html.GetEnumSelectList<PlanType>()" name="Type"></select>
+        </div>
+        <div class="mb-3">
+            <label for="basic-url" class="form-label">Выберите дисциплину</label>
+            <select class="form-select" name="DisciplineId" asp-items="@(new SelectList(ViewBag.Disciplines, "Id", "Name"))">
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="basic-url" class="form-label">Выберите группу</label>
+            <select class="form-select" name="GroupId" asp-items="@(new SelectList(ViewBag.Groups, "Id", "Name"))">
+            </select>
+        </div>
+        <input type="submit" class="btn btn-primary bth-find" value="Найти" />
+        <a style="margin-left: 3%" asp-action="Plans">Очистить поиск</a>
+    </form>
+</div>
+
+<div class="d-flex justify-content-center mt-5 mb-5">
+    <div id="normalFooterLine" class="mid-normal-line"></div>
+</div>
+
+<div class="d-flex justify-content-around flex-wrap">
+    @{
+        if (Model.plans == null)
+        {
+            <p class="text-center">Занятий не назначено</p>
+        }
+        else
+        {
+            if (Model.plans.Count == 0)
+            {   
+                <div>
+                <p class="text-center">По вашему запросу занятий не найдено</p>
+                <a style="margin-left: 3%" asp-action="Plans">Вернуться к полному списку</a>
+                </div>
+            }
+            for (int i = 0; i < Model.plans.Count(); i++)
+            {
+                <!--Lessons here-->
+                <div class="m-3 border-violet vw-80 d-flex flex-column">
+                    <p class="fw-bold fs-4 w-100 light-violet text-center">План @(i + 1)</p>
+                    <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                        "@Model.plans[i].Name"
+                    </p>
+
+                    @if (Model.plans[i].Testings != null)
+                    {
+                        for (int j = 0; j < Model.plans[i].Testings.Count(); j++)
+                        {
+                            <!--Testings here-->
+                            <div class="d-flex justify-content-between flex-wrap" style="margin-top:auto;">
+                                <h1 class="fs-5 pt-2 pb-2 flex-grow-5 h-testing">
+                                    @(j + 1). “@Model.plans[i].Testings[j].Item2”
+                                </h1>
+                                <a asp-action="Student" asp-route-id="@Model.plans[i].Testings[j].Item1" class="fs-5 text-center flex-grow-1 a-testing">
+                                    Оценить
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        }
+    }
+</div>
+
+<div class="text-center mt-5">
+    @{
+        if ((Model.page - 1) >= 1)
+        {
+            <a asp-action="Plans" asp-route-page="@(Model.page-1)">Назад</a>
+        }
+        for (int i = 1; i <= Model.numOfPage; i++)
+        {
+            <a asp-action="Plans" asp-route-page="@(i)">@(i)</a>
+        }
+        if (Model.page < Model.numOfPage)
+        {
+            <a asp-action="Plans" asp-route-page="@(Model.page+1)">Далее</a>
+        }
+    }
+</div>
+
+@section scripts {
+    <script src="~/js/lessons-page.js"></script>
+}

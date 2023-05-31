@@ -1,0 +1,152 @@
+﻿@using UniversityContracts.Enums;
+@using UniversityContracts.ViewModels;
+@model List<MessageViewModel>
+@{
+    ViewData["Title"] = "Отчётность";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div>
+    <img src="/images/reports-left-img.png" class="img-thumbnail" />
+    <div class="d-inline-flex ml-5 p-2" style="max-width: 65vh; vertical-align: top;">
+        <div>
+            <h1 class="fw-bold mb-5 mt-3">Отчётность</h1>
+            <h2 class="fw-bold mb-4">Оставьте дедлайны нам!</h2>
+            <p class="text-break fs-4">
+                Здесь вы можете видеть поручения
+                от кафедры об отчётности, проверить их статус,
+                а также с помощью нашего сайна быстро собрать
+                необходимый отчёт и отправить его на проверку.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center mt-5">
+    <div id="solidFooterLine" class="mid-solid-line"></div>
+</div>
+<div class="d-flex justify-content-center mt-2 mb-5">
+    <div id="normalFooterLine" class="mid-normal-line"></div>
+</div>
+
+<h1 class="fw-bold m-5">Сообщения</h1>
+<form asp-action="filterMessages">
+    <label for="basic-url" class="form-label">Сортировка поручений по статусу</label>
+    <div class="input-group mb-3 w-80">
+        <button class="btn btn-outline-secondary fs-4" type="submit">
+            <i class="fa-solid fa-arrow-down-wide-short"></i>
+        </button>
+        <select name="status" class="form-select" asp-items="@Html.GetEnumSelectList<Status>()">
+        </select>
+    </div>
+</form>
+<a style="margin-left: 3%" asp-action="Reports">Очистить поиск</a>
+
+<div class="d-flex justify-content-center mt-5 mb-5">
+    <div id="normalFooterLine" class="mid-normal-line"></div>
+</div>
+
+<div class="d-flex justify-content-around flex-wrap">
+    @{
+        if (Model == null)
+        {
+            <p>Сообщений от кафедры нет</p>
+        }
+        else
+        {
+            if (Model.Count() == 0)
+            {
+                <div>
+                    <p>Сообщения с данным статусом не найдены</p>
+                    <a style="margin-left: 3%" asp-action="Reports">Вернуться к полному списку</a>
+                </div>
+            }
+            for (int i = 0; i < Model.Count(); i++)
+            {
+                <div class="m-3 border-asphalt vw-60 d-flex flex-column">
+                    <p class="fw-bold fs-4 w-100 light-grey text-center">Поручение @(i + 1)</p>
+                    @if (Model[i].ReportType == ReportTypes.SumReport)
+                    {
+                        <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                            Тип отчёта: "Итоговый отчёт по дисциплине"
+                        </p>
+                        <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                            Дисциплина "@Model[i].DisciplineName"
+                        </p>
+                    }
+                    @if (Model[i].ReportType == ReportTypes.PlanReport)
+                    {
+                        <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                            Тип отчёта: "Отчёт по плану"
+                        </p>
+                        <p style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                            "@Model[i].PlanName"
+                        </p>
+                    }
+                    @if (Model[i].Status == Status.Активен)
+                    {
+                        <p class="msg-active" style="margin-top:auto; margin-left: 0.25rem; margin-right: 0.25rem;">
+                            Статус "Активен"
+                        </p>
+                        @if (Model[i].ReportType == ReportTypes.SumReport)
+                        {
+                            <div class="d-flex">
+                                <a asp-action="FullReport" asp-route-id="@Model[i].Id" class="fs-5 a-msg text-center flex-grow-1">
+                                    Сформировать
+                                </a>
+                            </div>
+                        } else
+                        {
+                            <div class="d-flex">
+                                <a asp-action="PlanReport" asp-route-id="@Model[i].Id" class="fs-5 a-msg text-center flex-grow-1">
+                                    Сформировать
+                                </a>
+                            </div>
+                        }
+
+                    }
+                    @if (Model[i].Status == Status.Проверяется)
+                    {
+                        <p class="msg-checking" style="margin-top:auto; margin-left: 0.25rem; margin-right: 0.25rem;">
+                            Статус "На проверке"
+                        </p>
+                    }
+                    @if (Model[i].Status == Status.Проверен)
+                    {
+                        <p class="msg-done" style="margin-top:auto; margin-left: 0.25rem; margin-right: 0.25rem;">
+                            Статус "Принят"
+                        </p>
+                    }
+                </div>
+            }
+            <!--------------->
+        }
+    }
+</div>
+
+@section scripts {
+    <script src="~/js/Reports-page.js"></script>
+}

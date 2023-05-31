@@ -1,0 +1,131 @@
+﻿<Window x:Class="DepartmentApp.RegistrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DepartmentApp"
+        mc:Ignorable="d"
+        Title="RegistrationWindow" Height="450" Width="800"
+         WindowState="Maximized"
+        Background="#F5FAFC">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Source="/back_img.png" Stretch="Fill" Grid.ColumnSpan="7" Grid.RowSpan="15"/>
+
+        <Canvas Background="#FFFFFF"  Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="8">
+            <Canvas.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Canvas.Resources>
+        </Canvas>
+
+        <Grid  Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="8" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Text="Название кафедры:" Grid.ColumnSpan="2" FontSize="15" VerticalAlignment="Bottom" FontFamily="Candara" />
+            <TextBox x:Name="TextBoxNameDepartment" Grid.Row="1" Grid.ColumnSpan="3" FontSize="15" FontFamily="Candara" VerticalContentAlignment="Center"
+                VerticalAlignment="Stretch" TextWrapping = "NoWrap"/>
+
+            <TextBlock Grid.Row="2" Text="Электронная почта:" Grid.ColumnSpan="2" VerticalAlignment="Bottom" FontSize="15" FontFamily="Candara" />
+            <TextBox x:Name="TextBoxEmailDepartment" Grid.Row="3" Grid.ColumnSpan="3" FontSize="15" FontFamily="Candara" VerticalContentAlignment="Center"
+                VerticalAlignment="Stretch" TextWrapping = "NoWrap"/>
+
+            <TextBlock Grid.Row="4" Text="Пароль:" FontSize="15" FontFamily="Candara" VerticalAlignment="Bottom" />
+            <PasswordBox x:Name="TextBoxPasswordDepartment1" Grid.Row="5" Grid.ColumnSpan="3" FontSize="15" FontFamily="Candara" VerticalContentAlignment="Center"
+                 VerticalAlignment="Stretch"/>
+
+            <TextBlock Grid.Row="6" Text="Повторите введенный пароль:" VerticalAlignment="Bottom" Grid.ColumnSpan="3" FontSize="15" FontFamily="Candara" />
+            <PasswordBox x:Name="TextBoxPasswordDepartment2" Grid.Row="7" Grid.ColumnSpan="3" FontSize="15" FontFamily="Candara" VerticalContentAlignment="Center"
+                 VerticalAlignment="Stretch"/>
+
+            <Button Click="ButtonCancel_Click" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="1" FontSize="20" FontFamily="Candara" Content="Отмена" Margin="0 0 5 0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#F0F8FF"/>
+                        <Setter Property="Foreground" Value="#4D5CFD"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button Click="ButtonEntry_Click" Grid.Column="2" Grid.Row="10" Grid.ColumnSpan="1" FontSize="15" FontFamily="Candara" Content="Зарегистрироваться" Margin="5 0 0 0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#4D5CFD"/>
+                        <Setter Property="Foreground" Value="#F0F8FF"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+
+    </Grid>
+</Window>

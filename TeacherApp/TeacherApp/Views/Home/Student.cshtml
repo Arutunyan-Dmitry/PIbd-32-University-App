@@ -1,0 +1,70 @@
+﻿@using UniversityContracts.Enums;
+@model (List<Tuple<int, string, MarkType>> students, int testingId, PlanType testingType)
+@{
+    Layout = "_Simp_2_Layout";
+    ViewData["Title"] = "Оценивание студентов";
+    if (ViewData["UnxpError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                OpenBootstrapPopup();
+            };
+            function OpenBootstrapPopup() {
+                $("#staticBackdrop").modal('show');
+            }
+        </script>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #ffb0b0;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-3" id="staticBackdropLabel">Ошибка</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @ViewData["UnxpError"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div class="mb-4 text-center">
+    <h1>Оценить студентов</h1>
+</div>
+<form asp-action="PutStudentsGrades" method="post">
+    <input type="hidden" name="testingId" value="@Model.testingId" />
+    @{
+        for (int i = 0; i < Model.students.Count(); i++)
+        {
+            <input type="hidden" name="studentId" value="@Model.students[i].Item1" />
+            <div class="mb-3 d-flex frex-wrap">
+                <p style="margin-right: 2%; margin-bottom: 0;" class="fs-5">@(i + 1).</p>
+                <p class="flex-grow-1 fs-5" style=" margin-bottom: 0;">@Model.students[i].Item2</p>
+                @{
+                    var selectList = Html.GetEnumSelectList<MarkType>();
+                    if (Model.testingType == PlanType.Лекционный)
+                    {
+                        selectList = selectList.Where(rec => rec.Text != MarkType.Неуд.ToString() &&
+                        rec.Text != MarkType.Удовл.ToString() &&
+                        rec.Text != MarkType.Хор.ToString() &&
+                        rec.Text != MarkType.Отл.ToString()).ToList();
+                    } else
+                    {
+                        selectList = selectList.Where(rec => rec.Text != MarkType.П.ToString() &&
+                        rec.Text != MarkType.УП.ToString() &&
+                        rec.Text != MarkType.НП.ToString()).ToList();
+                    }
+                    foreach (var item in selectList)
+                    {
+                        if (item.Text == Model.students[i].Item3.ToString())
+                            item.Selected = true;
+                    }
+                }
+                <select class="form-select" style="width: 13vh;" asp-items="selectList" name="Grade"></select>
+            </div>
+        }
+    }
+    <input type="submit" class="btn btn-primary" value="Оценить" />
+    <a style="margin-left: 3%" asp-action="Plans">Назад</a>
+</form>

@@ -1,0 +1,282 @@
+﻿<Window x:Class="DepartmentApp.DisciplineCreateUpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DepartmentApp"
+        mc:Ignorable="d"
+        Title="DisciplineCreateUpdateWindow" Height="450" Width="800"
+        WindowState="Maximized"
+        Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Image Source="/back_img.png" Stretch="Fill" Grid.ColumnSpan="7" Grid.RowSpan="15"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Text="Новая Дисциплина" VerticalAlignment="Stretch" FontSize="20" FontFamily="Candara" Background="#F7F7F7" Foreground="#5D6067" Padding="0 15 0 0" TextAlignment="Center"/>
+
+        <Button Click="ButtonBack_Click" Grid.Row="0" Grid.Column="0" FontSize="20" FontFamily="Candara">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/icon_back_upd.png" Width="25" Height="15" HorizontalAlignment="Left"/>
+                <TextBlock HorizontalAlignment="Right">Назад</TextBlock>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#F7F7F7"/>
+                    <Setter Property="Foreground" Value="#5D6067"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <TextBlock Grid.Column="1" Grid.Row="2" Text="Название дисциплины:" TextAlignment="Left" FontSize="15" FontFamily="Candara" 
+                   Foreground="White" VerticalAlignment="Bottom" />
+
+        <TextBox x:Name="TextBoxNameDiscipline" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2" FontSize="15" 
+                 FontFamily="Candara" VerticalContentAlignment="Center" Margin="0 0 0 20" VerticalAlignment="Top"
+                 MinHeight = "30" Height = "Auto" MaxHeight = "60" MaxLines="2" VerticalScrollBarVisibility="Auto" TextWrapping = "Wrap"/>
+
+        <TextBlock Grid.Column="1" Grid.Row="4" Text="Преподаватели:" Foreground="White" TextAlignment="Left" FontSize="15" 
+                   FontFamily="Candara" VerticalAlignment="Bottom" />
+        <ComboBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Background="White" x:Name="ComboBoxTeachers" ItemsSource="{Binding sourceComboBoxTeachers}">            
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Flm}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Click="ButtonAddTeacher_Click" Grid.Column="3" Grid.Row="5" Width="25" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="17" FontFamily="Candara">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/icon_add.png" Width="20" Height="20" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF6B44"/>
+                    <Setter Property="Foreground" Value="#F0F8FF"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Click="ButtonDelTeacher_Click" Grid.Column="3" Grid.Row="5" Width="25" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="17" FontFamily="Candara">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/icon_del.png" Width="20" Height="20" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF6B44"/>
+                    <Setter Property="Foreground" Value="#F0F8FF"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+
+        <ScrollViewer Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="6" HorizontalContentAlignment="Stretch" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Orientation="Vertical">
+                <ItemsControl x:Name="ListViewTeachers" ItemsSource="{Binding sourceTeacher}" FontSize="20" FontFamily="Candara">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid  Margin="0 5 0 5" Background="White">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="400" Text="{Binding Flm}" Margin="5 5 5 0"></TextBlock>
+                                
+                                <Separator Grid.Row="3" Height="5" Background="Transparent"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBlock Grid.Column="4" Grid.Row="2" Text="Учебный план:" TextAlignment="Left" FontSize="15" Foreground="White" FontFamily="Candara" 
+                   VerticalAlignment="Bottom"/>
+        <Button Click="ButtonAddPlan_Click" Grid.Column="4" Grid.Row="3" Grid.ColumnSpan="2" FontSize="15" FontFamily="Candara">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/icon_add.png" Width="20" Height="20" HorizontalAlignment="Left"/>
+                <TextBlock HorizontalAlignment="Center">Создать учебный план</TextBlock>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF6B44"/>
+                    <Setter Property="Foreground" Value="#F0F8FF"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <ScrollViewer Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="9" HorizontalContentAlignment="Stretch" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Orientation="Vertical">
+                <ItemsControl x:Name="ListViewPlans" ItemsSource="{Binding sourcePlan}" FontSize="20" FontFamily="Candara">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0 5 0 5" Background="White">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="400" Text="{Binding Type}" FontWeight="Bold" Margin="5 5 5 0"></TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Количество часов: " Margin="5 5 5 0"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="400" Text="{Binding Hours}" Margin="5 5 5 0"></TextBlock>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Группа: " Margin="5 5 5 0"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Width="400" Text="{Binding GroupName}" Margin="5 5 5 0"></TextBlock>
+
+                                <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Удалить" Margin="5 0 5 0"
+                                         Tag ="{Binding Id}">
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Setter Property="Background" Value="#4D5089"/>
+                                            <Setter Property="Foreground" Value="#F0F8FF"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                        <Border Background="{TemplateBinding Background}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="5" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button Click="ButtonCancel_Click" Grid.Column="1" Grid.Row="13" Grid.ColumnSpan="1" FontSize="20" FontFamily="Candara" Content="Отмена" Margin="0 0 5 0">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#F0F8FF"/>
+                    <Setter Property="Foreground" Value="#4D5CFD"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button Click="ButtonSave_Click" Grid.Column="2" Grid.Row="13" Grid.ColumnSpan="1" FontSize="20" FontFamily="Candara" Content="Сохранить" Margin="5 0 0 0">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#4D5CFD"/>
+                    <Setter Property="Foreground" Value="#F6FEF9"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
+</Window>

@@ -1,0 +1,176 @@
+﻿<Window x:Class="DepartmentApp.DisciplineWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DepartmentApp"
+        mc:Ignorable="d"
+        Title="DisciplineWindow" Height="450" Width="800"
+        WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Image Source="/back_img.png" Stretch="Fill" Grid.ColumnSpan="7" Grid.RowSpan="15"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Text="Дисциплины" VerticalAlignment="Stretch" FontSize="20" FontFamily="Candara" Background="#F7F7F7" Foreground="#5D6067" Padding="0 15 0 0" TextAlignment="Center"/>
+
+        <Button Click="ButtonBack_Click" Grid.Row="0" Grid.Column="0" FontSize="20" FontFamily="Candara">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/icon_back_upd.png" Width="25" Height="15" HorizontalAlignment="Left"/>
+                <TextBlock HorizontalAlignment="Right">Назад</TextBlock>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#F7F7F7"/>
+                    <Setter Property="Foreground" Value="#5D6067"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+
+        <Button Click="ButtonAddDiscipline_Click" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" FontSize="20" FontFamily="Candara">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/icon_add.png" Width="30" Height="30" HorizontalAlignment="Left"/>
+                <TextBlock HorizontalAlignment="Center">Добавить новую дисциплину</TextBlock>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#989AC9"/>
+                    <Setter Property="Foreground" Value="#F0F8FF"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+        
+        <ScrollViewer Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="3" Grid.RowSpan="10" HorizontalContentAlignment="Stretch" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Orientation="Vertical">
+                <ItemsControl x:Name="ListViewDiscipline" ItemsSource="{Binding sourceDiscipline}" FontSize="20" FontFamily="Candara">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#C8C8C8" BorderThickness="1" CornerRadius="15" Margin="0 0 0 10" Background="#F5FAFC">
+                                <Border.BitmapEffect>
+                                    <DropShadowBitmapEffect Color="#C8C8C8" Direction="2" ShadowDepth="5" Opacity="0.5" Softness="0.5" />
+                                </Border.BitmapEffect>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Grid.Row="0" Text="Название дисциплины: " FontWeight="Bold" Margin="0 5 0 0"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Width="400" Text="{Binding Name}" Margin="0 5 0 0"></TextBlock>
+                                    <Button Grid.Row="2" Grid.Column="0" Content="Просмотр" Margin="50 5 0 0">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Background" Value="#989AC9"/>
+                                                <Setter Property="Foreground" Value="#F0F8FF"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border Background="{TemplateBinding Background}">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <Button x:Name="ButtonUpdate" Tag ="{Binding Id}"  Click="ButtonUpdate_Click" Grid.Row="2" Grid.Column="1" Content="Редактировать" Margin="50 0 0 0">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Background" Value="#989AC9"/>
+                                                <Setter Property="Foreground" Value="#F0F8FF"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border Background="{TemplateBinding Background}">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <Button Grid.Row="2" Grid.Column="2" Tag ="{Binding Id}"  Click="ButtonDelete_Click"  Content="Удалить" Margin="50 0 0 0">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Background" Value="#989AC9"/>
+                                                <Setter Property="Foreground" Value="#F0F8FF"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border Background="{TemplateBinding Background}">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <Separator Grid.Row="3" Height="25" Background="Transparent"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+        
+    </Grid>
+</Window>
