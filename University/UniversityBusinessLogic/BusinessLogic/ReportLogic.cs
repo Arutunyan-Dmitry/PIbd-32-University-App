@@ -15,10 +15,11 @@ namespace UniversityBusinessLogic.BusinessLogic
         public IDisciplineStorage _disciplineStorage;
         public IStudentStorage _studentStorage;
         public IGroupStorage _groupStorage;
+        public IDepartmentStorage _departmentStorage;
         private readonly AbstractSaveToWord _saveToWord;
         public ReportLogic(IPlanStorage planStorage, ITeacherStorage teacherStorage,
             ITestingStorage testingStorage, IDisciplineStorage disciplineStorage,
-            IStudentStorage studentStorage, IGroupStorage groupStorage, 
+            IStudentStorage studentStorage, IGroupStorage groupStorage, IDepartmentStorage departmentStorage,
             AbstractSaveToWord abstractSaveToWord)
         {
             _planStorage = planStorage;
@@ -27,6 +28,7 @@ namespace UniversityBusinessLogic.BusinessLogic
             _disciplineStorage = disciplineStorage;
             _studentStorage = studentStorage;
             _groupStorage = groupStorage;
+            _departmentStorage = departmentStorage;
             _saveToWord = abstractSaveToWord;
         }
 
@@ -138,15 +140,23 @@ namespace UniversityBusinessLogic.BusinessLogic
 
         public ReportPlanViewModel GetObjectsForPlanReport(MessageBindingModel model)
         {
-            List<Tuple<string, List<Tuple<string, MarkType>>>> items = new List<Tuple<string, List<Tuple<string, MarkType>>>>();
+            List<Tuple<string, string, List<Tuple<string, MarkType>>>> items = new List<Tuple<string, string, List<Tuple<string, MarkType>>>>();
 
             TeacherViewModel teacher = _teacherStorage.GetElement(new TeacherBindingModel
             {
                 Id = model.TeacherId
             });
+            DepartmentViewModel department = _departmentStorage.GetElement(new DepartmentBindingModel
+            {
+                Id = teacher.DepartmentId
+            });
             PlanViewModel plan = _planStorage.GetElement(new PlanBindingModel
             {
                 Id = model.PlanId
+            });
+            GroupViewModel group = _groupStorage.GetElement(new GroupBindingModel
+            {
+                Id = plan.GroupId
             });
             List<TestingViewModel> testings = _testingStorage.GetFilteredList(new TestingBindingModel
             {
@@ -156,9 +166,13 @@ namespace UniversityBusinessLogic.BusinessLogic
 
             foreach (var item in studentTestings)
             {
-                items.Add(new Tuple<string, List<Tuple<string, MarkType>>>
+                StudentViewModel student = _studentStorage.GetElement(new StudentBindingModel
+                {
+                    Id = item.Item1
+                });
+                items.Add(new Tuple<string, string, List<Tuple<string, MarkType>>>
                     (
-                        item.Item2, new List<Tuple<string, MarkType>>()
+                        student.NumFB, item.Item2, new List<Tuple<string, MarkType>>()
                     ));
             }
 
@@ -166,16 +180,82 @@ namespace UniversityBusinessLogic.BusinessLogic
             {
                 foreach (var grades in testings[i].StudentTestings)
                 {
-                    items.Where(rec => rec.Item1 == grades.Item2).ToList()?[0]
-                        .Item2.Add(new Tuple<string, MarkType>(testings[i].Topic, grades.Item3));
+                    items.Where(rec => rec.Item2 == grades.Item2).ToList()?[0]
+                        .Item3.Add(new Tuple<string, MarkType>(testings[i].Topic, grades.Item3));
                 }
             }
+           
+            List<string> itog = new List<string> { "", "", "Итог: " };
+
+            for (int i = 0; i < items[0].Item3?.Count; i++)
+            {
+                if (items[0].Item3[i].Item2 == MarkType.П ||
+                    items[0].Item3[i].Item2 == MarkType.НП ||
+                    items[0].Item3[i].Item2 == MarkType.УП)
+                {
+                    int upCount = 0;
+                    int pCount = 0;
+                    int npCount = 0;
+                    foreach (var item in items)
+                    {
+                        if (item.Item3[i].Item2 == MarkType.УП)
+                            upCount++;
+                        else if (item.Item3[i].Item2 == MarkType.П)
+                            pCount++;
+                        else if (item.Item3[i].Item2 == MarkType.НП)
+                            npCount++;
+                    }
+                    itog.Add("УП - " + upCount + 
+                             " П - " + pCount + 
+                             " НП - " + npCount);
+                } else
+                {
+                    int Count0 = 0;
+                    int Count2 = 0;
+                    int Count3 = 0;
+                    int Count4 = 0;
+                    int Count5 = 0;
+                    foreach (var item in items)
+                    {
+                        if (item.Item3[i].Item2 == MarkType.Нет)
+                            Count0++;
+                        else if (item.Item3[i].Item2 == MarkType.Неуд)
+                            Count2++;
+                        else if (item.Item3[i].Item2 == MarkType.Удовл)
+                            Count3++;
+                        else if (item.Item3[i].Item2 == MarkType.Хор)
+                            Count4++;
+                        else if (item.Item3[i].Item2 == MarkType.Отл)
+                            Count5++;
+                    }
+                    itog.Add("Нет - " + Count0 +
+                             " Неуд - " + Count2 +
+                             " Удовл - " + Count3 +
+                             " Хор - " + Count4 +
+                             " Отл - " + Count5);
+                }
+            }
+
+            List<string> footer = new List<string> 
+            {
+                "Подпись декана _____________________________",
+                "Подпись преподавателя _____________________________"
+            };
+            List<string> planName = new List<string>
+            {
+                "University",
+                "Кафедра: " + department.Name + "                  Группа: " + group.Name,
+                plan.Name,
+                "Преподаватель: " + teacher.Flm,
+                "Общее количество часов: " + plan.Hours + "             Дата: " + DateTime.Now.Date.ToShortDateString()
+            };
 
             return new ReportPlanViewModel
             {
                 Title = "Отчёт по плану",
-                Footer = "Выполнил " + teacher.Flm,
-                PlanName = plan.Name,
+                Footer = footer,
+                PlanName = planName,
+                Itog = itog,
                 Items = items
             };
         }

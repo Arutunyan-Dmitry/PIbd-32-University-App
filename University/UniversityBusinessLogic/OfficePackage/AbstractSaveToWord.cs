@@ -12,23 +12,26 @@ namespace UniversityBusinessLogic.OfficePackage
             CreateParagraph(new WordParagraph
             {
                 Texts = new List<(string, WordTextProperties)> {
-                (model.Title, new WordTextProperties { Bold = true, Size = "24", })},
+                (model.Title.ToUpper(), new WordTextProperties { Bold = true, Size = "24", })},
                 TextProperties = new WordTextProperties
                 {
                     Size = "24",
                     JustificationType = WordJustificationType.Center
                 }
             });
-            CreateParagraph(new WordParagraph
+            foreach (var pn in model.PlanName)
             {
-                Texts = new List<(string, WordTextProperties)> {
-                (model.PlanName, new WordTextProperties { Bold = true, Size = "20", })},
-                TextProperties = new WordTextProperties
+                CreateParagraph(new WordParagraph
                 {
-                    Size = "20",
-                    JustificationType = WordJustificationType.Both
-                }
-            });
+                    Texts = new List<(string, WordTextProperties)> {
+                (pn, new WordTextProperties { Bold = false, Size = "20", })},
+                    TextProperties = new WordTextProperties
+                    {
+                        Size = "20",
+                        JustificationType = WordJustificationType.Both
+                    }
+                });
+            }
             CreateParagraph(new WordParagraph
             {
                 Texts = new List<(string, WordTextProperties)> {
@@ -41,25 +44,28 @@ namespace UniversityBusinessLogic.OfficePackage
             });
             List<string> head = new List<string>
             {
-                "ФИО"
+                "№", "№ з.к.", "ФИО"
             };
-            foreach (var testing in model.Items[0].Item2)
+            foreach (var testing in model.Items[0].Item3)
             {
                 head.Add(testing.Item1);
             }
             CreateTable(head);
+            int j = 0;
             foreach (var items in model.Items)
             {
+                j++;
                 var list = new List<string>
                 {
-                    items.Item1
+                    j.ToString(), items.Item1, items.Item2
                 };
-                foreach (var subItem in items.Item2)
+                foreach (var subItem in items.Item3)
                 {
                     list.Add(subItem.Item2.ToString());
                 }
-                CreateRow(list);
+                CreateRow(list, false);
             }
+            CreateRow(model.Itog, false);
             CreateParagraph(new WordParagraph
             {
                 Texts = new List<(string, WordTextProperties)> {
@@ -70,26 +76,19 @@ namespace UniversityBusinessLogic.OfficePackage
                     JustificationType = WordJustificationType.Both
                 }
             });
-            CreateParagraph(new WordParagraph
+            foreach(var p in model.Footer)
             {
-                Texts = new List<(string, WordTextProperties)> {
-                (model.Footer, new WordTextProperties { Bold = false, Size = "20", })},
-                TextProperties = new WordTextProperties
+                CreateParagraph(new WordParagraph
                 {
-                    Size = "20",
-                    JustificationType = WordJustificationType.Both
-                }
-            });
-            CreateParagraph(new WordParagraph
-            {
-                Texts = new List<(string, WordTextProperties)> {
-                (DateTime.Now.ToShortDateString(), new WordTextProperties { Bold = false, Size = "20", })},
-                TextProperties = new WordTextProperties
-                {
-                    Size = "20",
-                    JustificationType = WordJustificationType.Both
-                }
-            });
+                    Texts = new List<(string, WordTextProperties)> {
+                (p, new WordTextProperties { Bold = false, Size = "20", })},
+                    TextProperties = new WordTextProperties
+                    {
+                        Size = "20",
+                        JustificationType = WordJustificationType.Both
+                    }
+                });
+            }
             SaveWord();
         }
         public void CreateFullDoc(ReportFullViewModel model, string filename)
@@ -178,7 +177,7 @@ namespace UniversityBusinessLogic.OfficePackage
                             row.Add(subItem3.Item2.ToString());
                         }
                     }
-                    CreateRow(row);
+                    CreateRow(row, true);
                 }
             }
             //--------------------------------------------------
@@ -241,7 +240,7 @@ namespace UniversityBusinessLogic.OfficePackage
         /// Создание строки таблицы с текстом
         /// </summary>
         /// <param name="tableRow"></param>
-        protected abstract void CreateRow(List<string> tableRow);
+        protected abstract void CreateRow(List<string> tableRow, bool complex);
         /// <summary>
         /// Сохранение файла
         /// </summary>

@@ -132,7 +132,10 @@ namespace UniversityWebApi.Controllers
         { TeacherId = id });
         [HttpGet]
         public List<MessageViewModel> GetMessagesByStatus(int id, Status status) => _message.Read(new MessageBindingModel
-        { TeacherId = id, Status = status });
+        { TeacherId = id, Status = status});
+        [HttpGet]
+        public List<MessageViewModel> GetMessagesByStatusAndType(int id, ReportTypes typeReport, Status status) => _message.Read(new MessageBindingModel
+        { TeacherId = id, Status = status, ReportType = typeReport });
         //------------------------------Filtered Lists----------------------------
 
         //------------------------------   Elements   ----------------------------

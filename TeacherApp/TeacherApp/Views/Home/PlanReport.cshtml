@@ -56,31 +56,52 @@
 <a class="btn btn-primary bth-find mt-4" role="button" asp-action="SendReportByMail" asp-route-messageId="@Model.id">Отправить на проверку</a>
 <div class="container-sm" style="min-height: 100vh;">
     <h1 class="text-center m-4 fs-4 fw-bold">@Model.model.Title</h1>
-    <h1 class="fs-5" style="margin-bottom: 3%; margin-top: 3%">План: @Model.model.PlanName</h1>
+    <div style="margin-bottom: 3%; margin-top: 3%">
+        @foreach (var pn in Model.model.PlanName)
+        {
+            <h1 class="fs-5">@pn</h1>
+        }
+    </div>
     <table class="table table table-bordered border-dark border-3">
         <tr>
             @{
+                <th class="text-center">№</th>
+                <th class="text-center">№ з.к.</th>
                 <th class="text-center">ФИО</th>
-                for (int i = 0; i < Model.model.Items[0].Item2.Count(); i++)
+                for (int i = 0; i < Model.model.Items[0].Item3.Count(); i++)
                 {
-                    <th class="text-center">@Model.model.Items[0].Item2[i].Item1</th>
+                    <th class="text-center">@Model.model.Items[0].Item3[i].Item1</th>
                 }
             }
         </tr>
         @{
+            int j = 0;
             foreach (var item in Model.model.Items)
             {
+                j++;
                 <tr>
+                <td>@j</td>
                 <td>@item.Item1</td>
-                    @foreach(var grade in item.Item2)
+                <td>@item.Item2</td>
+                    @foreach(var grade in item.Item3)
                     {
                         <td class="text-end">@grade.Item2</td>
                     }
                 </tr>
             }
+            <tr>
+                @foreach(var itog in Model.model.Itog)
+                {
+                    <td>@itog</td>
+                }
+            </tr>
         }
     </table>
-    <p class="fs-5" style="margin-bottom: 1%; margin-top: 5%">@Model.model.Footer</p>
-    <p class="fs-5" style="margin-bottom: 5%;">@DateTime.Now.ToShortDateString()</p>
+    <div style="margin-bottom: 1%; margin-top: 5%">
+        @foreach (var p in Model.model.Footer)
+        {
+            <p class="fs-5">@p</p>
+        }
+    </div>
     <a asp-action="Reports">Вернуться к сообщениям</a>
 </div>

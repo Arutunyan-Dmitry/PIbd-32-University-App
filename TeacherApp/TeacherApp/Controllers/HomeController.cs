@@ -75,6 +75,12 @@ namespace TeacherApp.Controllers
                 return;
             }
         }
+
+        public IActionResult Exit()
+        {
+            APIClient.teacher = null;
+            return Redirect("SignUp");
+        }
         //------------------------------ SignUp -------------------------------
 
         //----------------------------- HomePage ------------------------------
@@ -441,7 +447,7 @@ namespace TeacherApp.Controllers
             }
         }
 
-        public IActionResult filterMessages(Status status)
+        public IActionResult filterMessages(ReportTypes typeReport, Status status)
         {
             if (APIClient.teacher == null)
             {
@@ -449,7 +455,7 @@ namespace TeacherApp.Controllers
                 return Redirect("SignUp");
             }
             List<MessageViewModel> list = APIClient.GetRequest<List<MessageViewModel>>(
-                $"api/Main/GetMessagesByStatus?id={APIClient.teacher.Id}&status={status}");
+                $"api/Main/GetMessagesByStatusAndType?id={APIClient.teacher.Id}&status={status}&typeReport={typeReport}");
             return RedirectToAction("Reports", "Home", new { serializedList = JsonConvert.SerializeObject(list) });
         }
         //------------------------- Messages&Reports --------------------------
@@ -510,9 +516,9 @@ namespace TeacherApp.Controllers
                 return File(fileBytes, "application/force-download", fileName);
             } catch (Exception ex)
             {
-                unxpError = "Файл не был сохранён\n";
-                unxpError += ex.Message;
-                return Redirect($"/PlanReport?id={messageId}");
+                unxpError = "Файл не был сохранён \n";
+                unxpError += GetCyrillic(ex.Message);
+                return Redirect($"/Home/PlanReport?id={messageId}");
             }
         }
 
@@ -571,9 +577,9 @@ namespace TeacherApp.Controllers
                 return File(fileBytes, "application/force-download", fileName);
             } catch (Exception ex)
             {
-                unxpError = "Файл не был сохранён\n";
-                unxpError += ex.Message;
-                return Redirect($"/FullReport?id={messageId}");
+                unxpError = "Файл не был сохранён \n";
+                unxpError += GetCyrillic(ex.Message);
+                return Redirect($"/Home/FullReport?id={messageId}");
             }
         }
         //----------------------------- Reports -------------------------------
@@ -618,8 +624,8 @@ namespace TeacherApp.Controllers
                     return Redirect($"/Home/FullReport?id={messageId}");
                 } catch (Exception ex)
                 {
-                    unxpError = "Письмо не отправлено\n";
-                    unxpError += ex.Message;
+                    unxpError = "Письмо не отправлено \n";
+                    unxpError += GetCyrillic(ex.Message);
                     return Redirect($"/Home/FullReport?id={messageId}");
                 }
             }
@@ -642,8 +648,8 @@ namespace TeacherApp.Controllers
                     return Redirect($"/Home/PlanReport?id={messageId}");
                 } catch(Exception ex)
                 {
-                    unxpError = "Письмо не отправлено\n";
-                    unxpError += ex.Message;
+                    unxpError = "Письмо не отправлено \n";
+                    unxpError += GetCyrillic(ex.Message);
                     return Redirect($"/Home/PlanReport?id={messageId}");
                 }
             }

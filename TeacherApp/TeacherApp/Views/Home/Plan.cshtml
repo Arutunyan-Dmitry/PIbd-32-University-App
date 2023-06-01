@@ -117,44 +117,46 @@
                             @if (@Model.plans[i].Testings != null)
                             {
                                 <div id="panelsStayOpen-collapse@(i)" class="accordion-collapse collapse">
-                                    @{
-                                        int j = 0;
-                                    }
-                                    @foreach (var item in @Model.plans[i].Testings)
-                                    {
-                                        j++;
-                                        <!--Tasks of particular plan-->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div class="vw-50">
-                                                <div class="testing mt-1">
-                                                    <p class="testing-item mt-2">Задание @j</p>
-                                                    <p class="testing-item">Тема: @item.Item2</p>
-                                                    <p class="testing-item">Часы: @item.Item3</p>
-                                                    <p class="testing-item">Дата: @item.Item4.ToShortDateString()</p>
-                                                </div>
-                                                <a asp-action="Testing" asp-route-groupId="@Model.plans[i].GroupId" asp-route-planId="@Model.plans[i].Id" asp-route-testingId="@item.Item1" class="btn btn-primary bth-update mt-2" role="button">Редактировать</a>
-                                                <!-- Deleting -->
-                                                <div class="modal fade" id="Modal-@item.Item1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Удалить задание</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Вы действительно хотите удалить это задание?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                                                                <a asp-action="DeleteTesting" asp-route-id="@item.Item1" type="button" class="btn btn-primary">Удалить</a>
+                                    <div class="d-flex flex-wrap">
+                                        @{
+                                            int j = 0;
+                                        }
+                                        @foreach (var item in @Model.plans[i].Testings)
+                                        {
+                                            j++;
+                                            <!--Tasks of particular plan-->
+                                            <div class="d-flex justify-content-between flex-wrap" style="max-width: 55vh; flex-grow: 1; margin-right: 1%;">
+                                                <div style="flex-grow: 1;">
+                                                    <div class="testing mt-1">
+                                                        <p class="testing-item mt-2">Задание @j</p>
+                                                        <p class="testing-item">Тема: @item.Item2</p>
+                                                        <p class="testing-item">Часы: @item.Item3</p>
+                                                        <p class="testing-item">Дата: @item.Item4.ToShortDateString()</p>
+                                                    </div>
+                                                    <a asp-action="Testing" asp-route-groupId="@Model.plans[i].GroupId" asp-route-planId="@Model.plans[i].Id" asp-route-testingId="@item.Item1" class="btn btn-primary bth-update mt-2" role="button">Редактировать</a>
+                                                    <!-- Deleting -->
+                                                    <div class="modal fade" id="Modal-@item.Item1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Удалить задание</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Вы действительно хотите удалить это задание?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                                                    <a asp-action="DeleteTesting" asp-route-id="@item.Item1" type="button" class="btn btn-primary">Удалить</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <a data-bs-toggle="modal" data-bs-target="#Modal-@item.Item1" class="btn btn-primary bth-delete mt-2" role="button">Удалить</a>
                                                 </div>
-                                                <a data-bs-toggle="modal" data-bs-target="#Modal-@item.Item1" class="btn btn-primary bth-delete mt-2" role="button">Удалить</a>
                                             </div>
-                                        </div>
-                                    }
+                                        }
+                                    </div>
                                 </div>
                             }
                         </div>

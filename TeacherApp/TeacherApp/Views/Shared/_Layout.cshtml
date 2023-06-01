@@ -13,7 +13,7 @@
     <header>
         <div class="upper-line"></div>
         <div id="navLine" class="line"></div>
-        <div class="container">
+        <div style="margin-left: 7%; margin-right: 0%;">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
                     <a class="navbar-brand text-black fs-3 fw-bold" href="#">University</a>
@@ -27,6 +27,9 @@
                                 <a id="plan" class=" nav-link fs-5" asp-action="Plan">План обучения</a>
                                 <a id="lessons" class="nav-link fs-5" asp-action="Plans">Занятия и оценки</a>
                                 <a id="reports" class="nav-link fs-5" asp-action="Reports">Отчётность</a>
+                                <div class="navbar-text d-flex flex-row-reverse" style="margin-left: 10%;">
+                                    <a class="btn btn-outline-danger" asp-action="Exit">Выйти</a>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -25,7 +25,8 @@ namespace UniversityDatabaseImplement.Implements
             return context.Messages
             .Where(rec => (rec.DepartmentId == model.DepartmentId) ||
                            (rec.TeacherId == model.TeacherId && model.Status == null) ||
-                           (rec.TeacherId == model.TeacherId && rec.Status == model.Status))
+                           (rec.TeacherId == model.TeacherId && rec.Status == model.Status && model.ReportType == null) ||
+                           (rec.TeacherId == model.TeacherId && rec.Status == model.Status && rec.ReportType == model.ReportType))
             .Select(CreateModel)
             .ToList();
         }

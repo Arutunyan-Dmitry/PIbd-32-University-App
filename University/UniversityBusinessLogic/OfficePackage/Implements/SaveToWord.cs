@@ -145,14 +145,42 @@ namespace UniversityBusinessLogic.OfficePackage.Implements
             );
             _table.AppendChild(tblProp);
             TableRow tableRowHeader = new TableRow();
-
+            int j = 0;
             foreach (string stringHeaderCell in tableHeader)
             {
-                TableCell cellHeader = new TableCell();
-                cellHeader.Append(new TableCellProperties(
-                new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
-                cellHeader.Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Center }), new Run(new RunProperties(new Bold()), new Text(stringHeaderCell))));
-                tableRowHeader.Append(cellHeader);
+                if (j == 0)
+                {
+                    TableCell cellHeader = new TableCell();
+                    cellHeader.Append(new TableCellProperties(
+                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "450" }));
+                    cellHeader.Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Center }), new Run(new RunProperties(new Bold()), new Text(stringHeaderCell))));
+                    tableRowHeader.Append(cellHeader);
+                }
+                else if (j == 1)
+                {
+                    TableCell cellHeader = new TableCell();
+                    cellHeader.Append(new TableCellProperties(
+                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1000" }));
+                    cellHeader.Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Center }), new Run(new RunProperties(new Bold()), new Text(stringHeaderCell))));
+                    tableRowHeader.Append(cellHeader);
+                }
+                else if (j == 2)
+                {
+                    TableCell cellHeader = new TableCell();
+                    cellHeader.Append(new TableCellProperties(
+                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "5000" }));
+                    cellHeader.Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Center }), new Run(new RunProperties(new Bold()), new Text(stringHeaderCell))));
+                    tableRowHeader.Append(cellHeader);
+                }
+                else
+                {
+                    TableCell cellHeader = new TableCell();
+                    cellHeader.Append(new TableCellProperties(
+                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2000" }));
+                    cellHeader.Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Center }), new Run(new RunProperties(new Bold()), new Text(stringHeaderCell))));
+                    tableRowHeader.Append(cellHeader);
+                }
+                j++;
             }
 
             _table.Append(tableRowHeader);
@@ -251,24 +279,42 @@ namespace UniversityBusinessLogic.OfficePackage.Implements
             _docBody.AppendChild(_table);
         }
 
-        protected override void CreateRow(List<string> tableRowInfo)
+        protected override void CreateRow(List<string> tableRowInfo, bool complex)
         {
             TableRow tableRow = new TableRow();
-            
-            TableCell tableCell = new TableCell();
+            if (!complex)
+            {
+                TableCell tableCell0 = new TableCell();
+                tableRow.Append(new TableCellProperties(
+                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa }));
+                tableRow.Append(new Paragraph(new Run(new Text(" " + tableRowInfo[0]))));
+                tableRow.Append(tableCell0);
+
+                tableRowInfo.Remove(tableRowInfo[0]);
+
+                TableCell tableCell1 = new TableCell();
+                tableRow.Append(new TableCellProperties(
+                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa }));
+                tableRow.Append(new Paragraph(new Run(new Text(" " + tableRowInfo[0]))));
+                tableRow.Append(tableCell1);
+
+                tableRowInfo.Remove(tableRowInfo[0]);
+            }
+            TableCell tableCell2 = new TableCell();
             tableRow.Append(new TableCellProperties(
-                new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
+                new TableCellWidth() { Type = TableWidthUnitValues.Dxa }));
             tableRow.Append(new Paragraph(new Run(new Text(" " + tableRowInfo[0]))));
-            tableRow.Append(tableCell);
+            tableRow.Append(tableCell2);
 
             tableRowInfo.Remove(tableRowInfo[0]);
+
 
             foreach (string celltext in tableRowInfo)
             {
                 TableCell tableCellmain = new TableCell();
                 tableRow.Append(new TableCellProperties(
-                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "3400" }));
-                tableRow.Append(new Paragraph (new ParagraphProperties( 
+                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa }));
+                tableRow.Append(new Paragraph(new ParagraphProperties(
                     new Justification() { Val = JustificationValues.End }), (new Run(new Text(celltext + " ")))));
                 tableRow.Append(tableCellmain);
             }

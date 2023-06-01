@@ -54,16 +54,27 @@
 
 <h1 class="fw-bold m-5">Сообщения</h1>
 <form asp-action="filterMessages">
-    <label for="basic-url" class="form-label">Сортировка поручений по статусу</label>
-    <div class="input-group mb-3 w-80">
-        <button class="btn btn-outline-secondary fs-4" type="submit">
-            <i class="fa-solid fa-arrow-down-wide-short"></i>
-        </button>
+    <div class="mb-3 w-80">
+        <label class="form-label">Тип отчёта в сообщении</label>
+        <select name="typeReport" class="form-select" asp-items="@Html.GetEnumSelectList<ReportTypes>()">
+        </select>
+    </div>
+    <div class="mb-3 w-80">
+        <label class="form-label">Статус сообщения</label>
         <select name="status" class="form-select" asp-items="@Html.GetEnumSelectList<Status>()">
         </select>
     </div>
+    <button class="btn btn-secondary" type="submit">Сортировать</button>
+    <a style="margin-left: 3%" asp-action="Reports">Очистить поиск</a>
 </form>
-<a style="margin-left: 3%" asp-action="Reports">Очистить поиск</a>
+
+<!-- Loading next page -->
+<div class="modal fade" id="loadPage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
 
 <div class="d-flex justify-content-center mt-5 mb-5">
     <div id="normalFooterLine" class="mid-normal-line"></div>
@@ -114,14 +125,14 @@
                         @if (Model[i].ReportType == ReportTypes.SumReport)
                         {
                             <div class="d-flex">
-                                <a asp-action="FullReport" asp-route-id="@Model[i].Id" class="fs-5 a-msg text-center flex-grow-1">
+                                <a onclick="SetPageAsLoading()" asp-action="FullReport" asp-route-id="@Model[i].Id" class="fs-5 a-msg text-center flex-grow-1">
                                     Сформировать
                                 </a>
                             </div>
                         } else
                         {
                             <div class="d-flex">
-                                <a asp-action="PlanReport" asp-route-id="@Model[i].Id" class="fs-5 a-msg text-center flex-grow-1">
+                                <a onclick="SetPageAsLoading()" asp-action="PlanReport" asp-route-id="@Model[i].Id" class="fs-5 a-msg text-center flex-grow-1">
                                     Сформировать
                                 </a>
                             </div>
@@ -148,5 +159,5 @@
 </div>
 
 @section scripts {
-    <script src="~/js/Reports-page.js"></script>
+    <script src="~/js/reports-page.js"></script>
 }

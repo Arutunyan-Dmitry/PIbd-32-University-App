@@ -20,3 +20,7 @@ for (let i = 0; i < fL1.length; i++) {
 for (let i = 0; i < fL2.length; i++) {
     fL2[i].style.backgroundColor = "#CCCDCE";
 }
+
+function SetPageAsLoading() {
+    $("#loadPage").modal('show');
+}
