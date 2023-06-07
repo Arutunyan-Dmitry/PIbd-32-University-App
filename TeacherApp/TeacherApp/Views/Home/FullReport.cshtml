@@ -52,11 +52,24 @@
         </div>
     }
 }
+<!-- Loading page -->
+<div class="modal fade" id="loadPage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
 <a class="btn btn-primary bth-find mt-4" role="button" asp-action="SaveFullReport" asp-route-messageId="@Model.id">Сохранить</a>
-<a class="btn btn-primary bth-find mt-4" role="button" asp-action="SendReportByMail" asp-route-messageId="@Model.id">Отправить на проверку</a>
+<a onclick="SetPageAsLoading()" class="btn btn-primary bth-find mt-4" role="button" asp-action="SendReportByMail" asp-route-messageId="@Model.id">Отправить на проверку</a>
 <div class="container-sm" style="min-height: 100vh;">
-    <h1 class="text-center fs-4 fw-bold" style="margin-bottom: 5%; margin-top: 5%">@Model.model.Title</h1>
-    <h1 class="fs-5" style="margin-bottom: 3%; margin-top: 3%">Дисциплина: @Model.model.DisciplineName</h1>
+    <p>@ViewData["test"]</p>
+    <h1 class="text-center m-4 fs-4 fw-bold">@Model.model.Title</h1>
+    <div style="margin-bottom: 3%; margin-top: 3%">
+        @foreach (var pn in Model.model.DisciplineName)
+        {
+            <h1 class="fs-5">@pn</h1>
+        }
+    </div>
     @{
         foreach (var group in Model.model.Items)
         {
@@ -94,13 +107,27 @@
                                     <td class="text-end">@subItem3.Item2</td>
                                 }
                         }
-                        </tr>
+                        </tr>                      
                     }
+                    <tr>
+                        @foreach(var itog in Model.model.Itog[Model.model.Items.IndexOf(group)].Item1)
+                        {
+                            <td class="text-end">@itog</td>
+                        }
+                    </tr>
                 }
             </table>
         }
     }
-    <p class="fs-5" style="margin-bottom: 1%; margin-top: 5%">@Model.model.Footer</p>
-    <p class="fs-5" style="margin-bottom: 5%;">@DateTime.Now.ToShortDateString()</p>
+    <div style="margin-bottom: 1%; margin-top: 5%">
+        @foreach (var p in Model.model.Footer)
+        {
+            <p class="fs-5">@p</p>
+        }
+    </div>
     <a asp-action="Reports">Вернуться к сообщениям</a>
 </div>
+
+@section scripts {
+    <script src="~/js/report.js"></script>
+}

@@ -1,4 +1,5 @@
-﻿using UniversityBusinessLogic.OfficePackage;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using UniversityBusinessLogic.OfficePackage;
 using UniversityContracts.BindingModels;
 using UniversityContracts.BusinessLogicContracts;
 using UniversityContracts.Enums;
@@ -35,10 +36,15 @@ namespace UniversityBusinessLogic.BusinessLogic
         public ReportFullViewModel GetObjectsForSumReport(MessageBindingModel model)
         {
             List<Tuple<string, List<Tuple<string, List<Tuple<string, List<Tuple<string, MarkType>>>>>>>> items = new List<Tuple<string, List<Tuple<string, List<Tuple<string, List<Tuple<string, MarkType>>>>>>>>();
+            List<Tuple<List<string>>> Itog = new List<Tuple<List<string>>>();
 
             TeacherViewModel teacher = _teacherStorage.GetElement(new TeacherBindingModel
             {
                 Id = model.TeacherId
+            });
+            DepartmentViewModel department = _departmentStorage.GetElement(new DepartmentBindingModel
+            {
+                Id = teacher.DepartmentId
             });
             DisciplineViewModel discipline = _disciplineStorage.GetElement(new DisciplineBindingModel
             {
@@ -83,7 +89,7 @@ namespace UniversityBusinessLogic.BusinessLogic
                 {
                     subitem.Item2.Add(new Tuple<string, List<Tuple<string, List<Tuple<string, MarkType>>>>>
                         (
-                            student.Flm, new List<Tuple<string, List<Tuple<string, MarkType>>>>()
+                            (subitem.Item2.Count()+1) + " / " + student.NumFB + " / " + student.Flm, new List<Tuple<string, List<Tuple<string, MarkType>>>>()
                         ));
 
                     foreach (var subItem2 in subitem.Item2)
@@ -129,11 +135,94 @@ namespace UniversityBusinessLogic.BusinessLogic
                     }
                 }
             }
+
+            for (int i = 0; i < items.Count(); i++)
+            {
+                
+                List<string> itog = new List<string> { "Итог:" };
+                for (int j = 0; j < items[i].Item2[0].Item2.Count(); j++)
+                {
+                    for (int k = 0; k < items[i].Item2[0].Item2[j].Item2.Count(); k++)
+                    {
+                        if (items[i].Item2[0].Item2[j].Item2[k].Item2 == MarkType.П ||
+                            items[i].Item2[0].Item2[j].Item2[k].Item2 == MarkType.НП ||
+                            items[i].Item2[0].Item2[j].Item2[k].Item2 == MarkType.УП)
+                        {
+                            int upCount = 0;
+                            int pCount = 0;
+                            int npCount = 0;
+                            foreach (var student in items[i].Item2)
+                            {
+                                if (student.Item2[j].Item2[k].Item2 == MarkType.УП)
+                                    upCount++;
+                                else if (student.Item2[j].Item2[k].Item2 == MarkType.П)
+                                    pCount++;
+                                else if (student.Item2[j].Item2[k].Item2 == MarkType.НП)
+                                    npCount++;
+                            }
+                            itog.Add("УП - " + upCount +
+                                     " П - " + pCount +
+                                     " НП - " + npCount);
+                        }
+                        else
+                        {
+                            int Count0 = 0;
+                            int Count2 = 0;
+                            int Count3 = 0;
+                            int Count4 = 0;
+                            int Count5 = 0;
+                            foreach (var student in items[i].Item2)
+                            {
+                                if (student.Item2[j].Item2[k].Item2 == MarkType.Нет)
+                                    Count0++;
+                                else if (student.Item2[j].Item2[k].Item2 == MarkType.Неуд)
+                                    Count2++;
+                                else if (student.Item2[j].Item2[k].Item2 == MarkType.Удовл)
+                                    Count3++;
+                                else if (student.Item2[j].Item2[k].Item2 == MarkType.Хор)
+                                    Count4++;
+                                else if (student.Item2[j].Item2[k].Item2 == MarkType.Отл)
+                                    Count5++;
+                            }
+                            itog.Add("Нет - " + Count0 +
+                                     " Неуд - " + Count2 +
+                                     " Удовл - " + Count3 +
+                                     " Хор - " + Count4 +
+                                     " Отл - " + Count5);
+                        }
+                    }
+                }
+                Itog.Add(new Tuple<List<string>>(itog));
+            }
+
+            string groupList = "";
+            foreach (var item in items)
+            {
+                if (items.IndexOf(item) != items.Count - 1)
+                    groupList += item.Item1 + ", ";
+                else
+                    groupList += item.Item1;
+            }
+
+            List<string> footer = new List<string>
+            {
+                "Подпись декана _____________________________",
+                "Подпись преподавателя _____________________________"
+            };
+            List<string> disciplineName = new List<string>
+            {
+                "University",
+                "Кафедра: " + department.Name + "                  Дисциплина: " + discipline.Name,
+                "Список групп: " + groupList,
+                "Преподаватель: " + teacher.Flm,
+                "Дата: " + DateTime.Now.Date.ToShortDateString()
+            };
             return new ReportFullViewModel
             {
                 Title = "Итоговый отчёт по всей дисциплине",
-                Footer = "Выполнил " + teacher.Flm,
-                DisciplineName = discipline.Name,
+                Footer = footer,
+                DisciplineName = disciplineName,
+                Itog = Itog,
                 Items = items
             };
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -574,6 +575,7 @@ namespace TeacherApp.Controllers
                 APIClient.PostRequest($"api/Main/SaveSumReport", new Tuple<MessageBindingModel, string>(resModel, rootPath + "\\TeacherApp\\wwwroot\\reports\\ОтчётПолный.docx"));
                 string fileName = "ОтчётПолный.docx";
                 byte[] fileBytes = System.IO.File.ReadAllBytes(_hostEnvironment.WebRootPath + @"\reports\" + fileName);
+                success = "Файл успешно сохранён";
                 return File(fileBytes, "application/force-download", fileName);
             } catch (Exception ex)
             {
@@ -615,12 +617,16 @@ namespace TeacherApp.Controllers
                     APIClient.PostRequest($"api/Main/SendMessage", new MailSendInfoBindingModel
                     {
                         MailAddress = department.Login,
-                        Subject = "Итоговый отчёт по дисциплине " + model.DisciplineName,
+                        Subject = "Итоговый отчёт по дисциплине " + model.DisciplineName + ", преподаватель: " + APIClient.teacher.Flm,
                         Text = "Отчёт находится в прикреплённом файле \n С уважением, \n" + APIClient.teacher.Flm,
                         FilePath = filePath
                     });
                     success = "Письмо успешно отправлено";
-//------------------ПИСЬМО ОТПРАВЛЕНО
+                    APIClient.PostRequest($"api/Main/AnswerRequest", new MessageBindingModel
+                    {
+                        Id = model.Id,
+                        DepartmentId = model.DepartmentId
+                    });
                     return Redirect($"/Home/FullReport?id={messageId}");
                 } catch (Exception ex)
                 {
@@ -639,12 +645,16 @@ namespace TeacherApp.Controllers
                     APIClient.PostRequest($"api/Main/SendMessage", new MailSendInfoBindingModel
                     {
                         MailAddress = department.Login,
-                        Subject = "Отчёт по учебному плану",
+                        Subject = "Отчёт по учебному плану " + model.PlanName + ", преподаватель: " + APIClient.teacher.Flm,
                         Text = model.PlanName + "\nОтчёт находится в прикреплённом файле \n С уважением, \n" + APIClient.teacher.Flm,
                         FilePath = filePath
                     });
                     success = "Письмо успешно отправлено";
-//------------------ПИСЬМО ОТПРАВЛЕНО
+                    APIClient.PostRequest($"api/Main/AnswerRequest", new MessageBindingModel
+                    {
+                        Id = model.Id,
+                        DepartmentId = model.DepartmentId
+                    });
                     return Redirect($"/Home/PlanReport?id={messageId}");
                 } catch(Exception ex)
                 {

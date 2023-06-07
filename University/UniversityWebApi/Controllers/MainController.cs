@@ -155,10 +155,6 @@ namespace UniversityWebApi.Controllers
         //------------------------------     Put      ----------------------------
         [HttpPost]
         public void AnswerRequest(MessageBindingModel model) => _message.AnswerRequest(model);
-        [HttpPost]
-        public void CloseRequest(MessageBindingModel model) => _message.CloseRequest(model);
-        [HttpPost]
-        public void MessageRollBack(MessageBindingModel model) => _message.MessageRollBack(model);
         [HttpGet]
         public bool AddGroupToTesting(int testingId, int groupId)
         {
@@ -321,6 +317,10 @@ namespace UniversityWebApi.Controllers
         }
         [HttpPut]
         public void RemoveTeacerFromDiscipline(TeacherDisciplineBindingModel model) => _teacher.RemoveDiscipline(model);
+        [HttpPost]
+        public void CloseRequest(MessageBindingModel model) => _message.CloseRequest(model);
+        [HttpPost]
+        public void MessageRollBack(MessageBindingModel model) => _message.MessageRollBack(model);
         //------------------------------     Put      ----------------------------
 
         //------------------------------      D       ----------------------------

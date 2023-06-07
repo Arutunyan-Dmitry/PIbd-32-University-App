@@ -99,23 +99,26 @@ namespace UniversityBusinessLogic.OfficePackage
             CreateParagraph(new WordParagraph
             {
                 Texts = new List<(string, WordTextProperties)> {
-                (model.Title, new WordTextProperties { Bold = true, Size = "24", })},
+                (model.Title.ToUpper(), new WordTextProperties { Bold = true, Size = "24", })},
                 TextProperties = new WordTextProperties
                 {
                     Size = "24",
                     JustificationType = WordJustificationType.Center
                 }
             });
-            CreateParagraph(new WordParagraph
+            foreach (var pn in model.DisciplineName)
             {
-                Texts = new List<(string, WordTextProperties)> {
-                ("Дисциплина: " + model.DisciplineName, new WordTextProperties { Bold = true, Size = "20", })},
-                TextProperties = new WordTextProperties
+                CreateParagraph(new WordParagraph
                 {
-                    Size = "20",
-                    JustificationType = WordJustificationType.Both
-                }
-            });
+                    Texts = new List<(string, WordTextProperties)> {
+                (pn, new WordTextProperties { Bold = false, Size = "20", })},
+                    TextProperties = new WordTextProperties
+                    {
+                        Size = "20",
+                        JustificationType = WordJustificationType.Both
+                    }
+                });
+            }
 
             //-------------body------------------
             foreach (var group in model.Items)
@@ -179,6 +182,7 @@ namespace UniversityBusinessLogic.OfficePackage
                     }
                     CreateRow(row, true);
                 }
+                CreateRow(model.Itog[model.Items.IndexOf(group)].Item1, true);
             }
             //--------------------------------------------------
 
@@ -192,26 +196,19 @@ namespace UniversityBusinessLogic.OfficePackage
                     JustificationType = WordJustificationType.Both
                 }
             });
-            CreateParagraph(new WordParagraph
+            foreach (var p in model.Footer)
             {
-                Texts = new List<(string, WordTextProperties)> {
-                (model.Footer, new WordTextProperties { Bold = false, Size = "20", })},
-                TextProperties = new WordTextProperties
+                CreateParagraph(new WordParagraph
                 {
-                    Size = "20",
-                    JustificationType = WordJustificationType.Both
-                }
-            });
-            CreateParagraph(new WordParagraph
-            {
-                Texts = new List<(string, WordTextProperties)> {
-                (DateTime.Now.ToShortDateString(), new WordTextProperties { Bold = false, Size = "20", })},
-                TextProperties = new WordTextProperties
-                {
-                    Size = "20",
-                    JustificationType = WordJustificationType.Both
-                }
-            });
+                    Texts = new List<(string, WordTextProperties)> {
+                (p, new WordTextProperties { Bold = false, Size = "20", })},
+                    TextProperties = new WordTextProperties
+                    {
+                        Size = "20",
+                        JustificationType = WordJustificationType.Both
+                    }
+                });
+            }
             SaveWord();
         }
         /// <summary>

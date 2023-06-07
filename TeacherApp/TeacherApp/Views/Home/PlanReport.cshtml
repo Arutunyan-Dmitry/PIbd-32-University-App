@@ -52,8 +52,16 @@
         </div>
     }
 }
+<!-- Loading page -->
+<div class="modal fade" id="loadPage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
 <a class="btn btn-primary bth-find mt-4" role="button" asp-action="SavePlanReport" asp-route-messageId="@Model.id">Сохранить</a>
-<a class="btn btn-primary bth-find mt-4" role="button" asp-action="SendReportByMail" asp-route-messageId="@Model.id">Отправить на проверку</a>
+<a onclick="SetPageAsLoading()" class="btn btn-primary bth-find mt-4" role="button" asp-action="SendReportByMail" asp-route-messageId="@Model.id">Отправить на проверку</a>
 <div class="container-sm" style="min-height: 100vh;">
     <h1 class="text-center m-4 fs-4 fw-bold">@Model.model.Title</h1>
     <div style="margin-bottom: 3%; margin-top: 3%">
@@ -105,3 +113,7 @@
     </div>
     <a asp-action="Reports">Вернуться к сообщениям</a>
 </div>
+
+@section scripts {
+    <script src="~/js/report.js"></script>
+}
