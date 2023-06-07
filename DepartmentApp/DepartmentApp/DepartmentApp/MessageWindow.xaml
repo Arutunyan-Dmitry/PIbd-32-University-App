@@ -5,8 +5,179 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DepartmentApp"
         mc:Ignorable="d"
-        Title="MessageWindow" Height="450" Width="800">
+        Title="MessageWindow" Height="450" Width="800"
+        WindowState="Maximized">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="28.936"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Text="Преподаватели" VerticalAlignment="Stretch" FontSize="20" FontFamily="Candara" Background="#F7F7F7" Foreground="#5D6067" Padding="0 15 0 0" TextAlignment="Center"/>
+
+        <Button Click="ButtonBack_Click" Grid.Row="0" Grid.Column="0" FontSize="20" FontFamily="Candara">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/icon_back_upd.png" Width="25" Height="15" HorizontalAlignment="Left"/>
+                <TextBlock HorizontalAlignment="Right">Назад</TextBlock>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#F7F7F7"/>
+                    <Setter Property="Foreground" Value="#5D6067"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Canvas Background="AliceBlue" Grid.Column="4" Grid.Row="2" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="0 0 70 0">
+            <Canvas.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Canvas.Resources>
+        </Canvas>
+        <Grid Grid.Column="4" Grid.Row="2" Grid.RowSpan="12" Grid.ColumnSpan="3" Margin="15 10 15 0">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontWeight="Bold" Text="Панель управления:" FontSize="20" FontFamily="Candara"/>
+            <Button Click="ButtonCreateUpdateMessage_Click" Grid.Row="1" Grid.ColumnSpan="2" Content="Создать поручение" BorderThickness="0" FontSize="15" Width="Auto" HorizontalContentAlignment="Left">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White" />
+                        <Style.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard Storyboard.TargetProperty="Background.Color">
+                                            <ColorAnimation To="#4D5089" Duration="0:0:1" />
+                                            <ColorAnimation To="#F5FAFC" BeginTime="0:1:52" Duration="0:0:4" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+
+        <ScrollViewer Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="12" HorizontalContentAlignment="Stretch" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Orientation="Vertical">
+                <ItemsControl x:Name="ListViewMessages" FontSize="20" FontFamily="Candara">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#C8C8C8" BorderThickness="1" CornerRadius="15" Margin="0 0 0 10" Background="#F5FAFC">
+                                <Border.BitmapEffect>
+                                    <DropShadowBitmapEffect Color="#C8C8C8" Direction="2" ShadowDepth="5" Opacity="0.5" Softness="0.5" />
+                                </Border.BitmapEffect>
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="70"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="30"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="170"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="170"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Text="Тип отчета:" Margin="15 0 0 0"></TextBlock>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Text="{Binding ReportType}" Margin="15 0 0 0"></TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Дисциплина/План" Margin="15 0 0 0"></TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Left" Tag="{Binding Id}" Text="{Binding PlanName}" Margin="15 0 0 0" TextWrapping="Wrap"></TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Left" Tag="{Binding Id}" Text="{Binding DisciplineName}" Margin="15 0 0 0"></TextBlock>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Статус:" Margin="15 0 0 0"></TextBlock>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Status}" Margin="15 0 0 0"></TextBlock>
+
+                                    <Button Grid.Row="4" Grid.Column="0" Margin="15 0 15 0" Content="Проверить" x:Name="ButtonCheck" Tag ="{Binding Id}"
+                                            Click="ButtonCheck_Click">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Background" Value="#4D5089"/>
+                                                <Setter Property="Foreground" Value="#F5FAFC"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border Background="{TemplateBinding Background}">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+
+                                    <Separator Grid.Row="3" Height="5" Background="Transparent"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
     </Grid>
 </Window>

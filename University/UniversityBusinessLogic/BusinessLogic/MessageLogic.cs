@@ -68,6 +68,25 @@ namespace UniversityBusinessLogic.BusinessLogic
                 Status = message.Status
             });
         }
+        public void MessageRollBack(MessageBindingModel model)
+        {
+            var message = _messageStorage.GetElement(new MessageBindingModel { Id = model.Id });
+            if (message == null)
+            {
+                throw new Exception("Сообщение не найдено");
+            }
+            message.Status = Status.Активен;
+            _messageStorage.Update(new MessageBindingModel
+            {
+                Id = message.Id,
+                DepartmentId = message.DepartmentId,
+                TeacherId = message.TeacherId,
+                PlanId = message.PlanId,
+                DisciplineId = message.DisciplineId,
+                ReportType = message.ReportType,
+                Status = message.Status
+            });
+        }
         public void Delete(MessageBindingModel model)
         {
             var message = _messageStorage.GetElement(new MessageBindingModel { Id = model.Id });

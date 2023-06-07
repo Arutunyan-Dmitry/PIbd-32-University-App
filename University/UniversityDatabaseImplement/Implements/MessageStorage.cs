@@ -74,7 +74,7 @@ namespace UniversityDatabaseImplement.Implements
         }
         private static Message CreateModel(MessageBindingModel model, Message message, UniversityDatabase context)
         {
-            if (model.Status == Status.Активен)
+            if (model.Status == Status.Активен && !model.ReportType.HasValue)
             {
                 if (model.PlanId != null)
                 {

@@ -110,6 +110,11 @@ namespace DepartmentHTTPClient.Controllers
         {
             return APIClient.GetRequest<bool>($"api/Main/DeleteLesson?id={id}");
         }
+        [HttpGet]
+        public List<PlanViewModel> GetDepartmentPlans(int departmentId)
+        {
+            return APIClient.GetRequest<List<PlanViewModel>>($"api/Main/GetDepartmentPlans?departmentId={departmentId}");
+        }
         //---------------------------------------------------------- Groups -------------------------------------------------------------------
         [HttpPost]
         public void CreateOrUpdateGroup(GroupBindingModel model)
@@ -162,6 +167,32 @@ namespace DepartmentHTTPClient.Controllers
         public List<StudentViewModel> GetStudentsByDepartment(int departmentId)
         {
             return APIClient.GetRequest<List<StudentViewModel>>($"api/Main/GetStudentsByDepartment?departmentId={departmentId}");
+        }
+        //----------------------------------------------------------- Messages ---------------------------------------------------------
+        [HttpPost]
+        public void CreateMessage(MessageBindingModel model)
+        {
+            APIClient.PostRequest($"api/Main/CreateMessage", model);
+        }
+        [HttpGet]
+        public List<MessageViewModel> GetDepartmentMessages(int id)
+        {
+            return APIClient.GetRequest<List<MessageViewModel>>($"api/Main/GetDepartmentMessages?id={id}");
+        }
+        [HttpGet]
+        public MessageViewModel? GetMessage(int id)
+        {
+            return APIClient.GetRequest<MessageViewModel>($"api/Main/GetMessage?id={id}");
+        }
+        [HttpPost]
+        public void CloseRequest(MessageBindingModel model)
+        {
+            APIClient.PostRequest($"api/Main/CloseRequest", model);
+        }
+        [HttpPost]
+        public void MessageRollBack(MessageBindingModel model)
+        {
+            APIClient.PostRequest($"api/Main/MessageRollBack", model);
         }
     }
 }

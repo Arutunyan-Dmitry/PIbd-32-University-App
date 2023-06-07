@@ -7,7 +7,7 @@ namespace DepartmentHTTPClient
     {
         private static readonly HttpClient client = new HttpClient();
 
-        private static readonly string ServerIp = "http://192.168.43.174:7249/";
+        private static readonly string ServerIp = "http://192.168.68.109:7249/";
         public static int DepartmentId { get; set; }
         public static string DepartmentName { get; set; }
 

@@ -9,6 +9,7 @@ namespace UniversityContracts.BusinessLogicContracts
         void CreateMessage(MessageBindingModel model);
         void AnswerRequest(MessageBindingModel model);
         void CloseRequest(MessageBindingModel model);
+        void MessageRollBack(MessageBindingModel model);
         void Delete(MessageBindingModel model);
     }
 }
