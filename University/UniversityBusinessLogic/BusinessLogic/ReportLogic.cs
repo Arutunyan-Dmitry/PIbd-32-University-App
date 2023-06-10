@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office.CustomUI;
+﻿using UniversityBusinessLogic.MailWorker;
 using UniversityBusinessLogic.OfficePackage;
 using UniversityContracts.BindingModels;
 using UniversityContracts.BusinessLogicContracts;
@@ -18,10 +18,12 @@ namespace UniversityBusinessLogic.BusinessLogic
         public IGroupStorage _groupStorage;
         public IDepartmentStorage _departmentStorage;
         private readonly AbstractSaveToWord _saveToWord;
+        private readonly AbstractMailWorker _mailWorker;
+
         public ReportLogic(IPlanStorage planStorage, ITeacherStorage teacherStorage,
             ITestingStorage testingStorage, IDisciplineStorage disciplineStorage,
             IStudentStorage studentStorage, IGroupStorage groupStorage, IDepartmentStorage departmentStorage,
-            AbstractSaveToWord abstractSaveToWord)
+            AbstractSaveToWord abstractSaveToWord, AbstractMailWorker mailWorker)
         {
             _planStorage = planStorage;
             _teacherStorage = teacherStorage;
@@ -31,6 +33,65 @@ namespace UniversityBusinessLogic.BusinessLogic
             _groupStorage = groupStorage;
             _departmentStorage = departmentStorage;
             _saveToWord = abstractSaveToWord;
+            _mailWorker = mailWorker;
+        }
+
+        public ReportGroupViewModel GetObjectsForGroupReport(int id)
+        {
+            List<Tuple<string, string, TypeEducationBasement>> items = new List<Tuple<string, string, TypeEducationBasement>>();
+            GroupViewModel group = _groupStorage.GetElement(new GroupBindingModel
+            {
+                Id = id
+            });
+            DepartmentViewModel department = _departmentStorage.GetElement(new DepartmentBindingModel 
+            {
+                Id = group.DepartmentId
+            });
+            List<StudentViewModel> students = _studentStorage.GetFilteredList(new StudentBindingModel
+            {
+                GroupId = group.Id
+            });
+            int count0 = 0;
+            int count1 = 0;
+            int count2 = 0;
+            foreach (var student in students)
+            {
+                items.Add(new Tuple<string, string, TypeEducationBasement>(
+                    student.NumFB, student.Flm, student.Basement));
+                if (student.Basement == TypeEducationBasement.Б)
+                    count0++;
+                if (student.Basement == TypeEducationBasement.ПО)
+                    count1++;
+                if (student.Basement == TypeEducationBasement.ЦП)
+                    count2++;
+            }
+
+            List<string> footer = new List<string>
+            {
+                "Из них:   Обучаются на бюджетной основе - " + count0,
+                "          Обучаются на платной основе - " + count1,
+                "          Обучаются по целевой программе - " + count2,
+                "",
+                "Подпись декана _____________________________",
+                "Подпись преподавателя _____________________________"
+            };
+            List<string> upper = new List<string>
+            {
+                "University",
+                "Кафедра: " + department.Name,
+                "Группа: " + group.Name + "                                 Курс: " + group.Course,
+                "Дата: " + DateTime.Now.Date.ToShortDateString(),
+                "",
+                "Список студентов, обучающихся в данной группе"
+            };
+            return new ReportGroupViewModel
+            {
+                Mail = department.Login,
+                Title = "Список студентов по группе",
+                Upper = upper,
+                Footer = footer,
+                Items = items
+            };
         }
 
         public ReportFullViewModel GetObjectsForSumReport(MessageBindingModel model)
@@ -89,7 +150,7 @@ namespace UniversityBusinessLogic.BusinessLogic
                 {
                     subitem.Item2.Add(new Tuple<string, List<Tuple<string, List<Tuple<string, MarkType>>>>>
                         (
-                            (subitem.Item2.Count()+1) + " / " + student.NumFB + " / " + student.Flm, new List<Tuple<string, List<Tuple<string, MarkType>>>>()
+                            (subitem.Item2.Count() + 1) + " / " + student.NumFB + " / " + student.Flm, new List<Tuple<string, List<Tuple<string, MarkType>>>>()
                         ));
 
                     foreach (var subItem2 in subitem.Item2)
@@ -138,7 +199,7 @@ namespace UniversityBusinessLogic.BusinessLogic
 
             for (int i = 0; i < items.Count(); i++)
             {
-                
+
                 List<string> itog = new List<string> { "Итог:" };
                 for (int j = 0; j < items[i].Item2[0].Item2.Count(); j++)
                 {
@@ -273,7 +334,7 @@ namespace UniversityBusinessLogic.BusinessLogic
                         .Item3.Add(new Tuple<string, MarkType>(testings[i].Topic, grades.Item3));
                 }
             }
-           
+
             List<string> itog = new List<string> { "", "", "Итог: " };
 
             for (int i = 0; i < items[0].Item3?.Count; i++)
@@ -294,10 +355,11 @@ namespace UniversityBusinessLogic.BusinessLogic
                         else if (item.Item3[i].Item2 == MarkType.НП)
                             npCount++;
                     }
-                    itog.Add("УП - " + upCount + 
-                             " П - " + pCount + 
+                    itog.Add("УП - " + upCount +
+                             " П - " + pCount +
                              " НП - " + npCount);
-                } else
+                }
+                else
                 {
                     int Count0 = 0;
                     int Count2 = 0;
@@ -325,7 +387,7 @@ namespace UniversityBusinessLogic.BusinessLogic
                 }
             }
 
-            List<string> footer = new List<string> 
+            List<string> footer = new List<string>
             {
                 "Подпись декана _____________________________",
                 "Подпись преподавателя _____________________________"
@@ -347,6 +409,20 @@ namespace UniversityBusinessLogic.BusinessLogic
                 Itog = itog,
                 Items = items
             };
+        }
+
+        public void SendGroupReport(int id)
+        {
+            string filePath = "D:\\ULSTU\\ПиАПС\\Курсовая\\PROJECT\\University\\reports\\Отчёт.docx";
+            var model = GetObjectsForGroupReport(id);
+            _saveToWord.CrwateGroupDoc(model, filePath);
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = model.Mail,
+                Subject = model.Title,
+                Text = "@Приложение автоматического учёта студентов",
+                FilePath = filePath
+            });           
         }
 
         public void SaveSumReport(MessageBindingModel model, string filename)

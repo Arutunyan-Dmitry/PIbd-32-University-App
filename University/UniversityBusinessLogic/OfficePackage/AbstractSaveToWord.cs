@@ -1,4 +1,5 @@
-﻿using UniversityBusinessLogic.OfficePackage.HelperEnums;
+﻿using DocumentFormat.OpenXml.EMMA;
+using UniversityBusinessLogic.OfficePackage.HelperEnums;
 using UniversityBusinessLogic.OfficePackage.HelperModels;
 using UniversityContracts.ViewModels;
 
@@ -6,6 +7,66 @@ namespace UniversityBusinessLogic.OfficePackage
 {
     public abstract class AbstractSaveToWord
     {
+        public void CrwateGroupDoc(ReportGroupViewModel model, string filename)
+        {
+            CreateWord(filename);
+            CreateParagraph(new WordParagraph
+            {
+                Texts = new List<(string, WordTextProperties)> {
+                (model.Title.ToUpper(), new WordTextProperties { Bold = true, Size = "24", })},
+                TextProperties = new WordTextProperties
+                {
+                    Size = "24",
+                    JustificationType = WordJustificationType.Center
+                }
+            });
+            foreach (var u in model.Upper)
+            {
+                CreateParagraph(new WordParagraph
+                {
+                    Texts = new List<(string, WordTextProperties)> {
+                (u, new WordTextProperties { Bold = false, Size = "20", })},
+                    TextProperties = new WordTextProperties
+                    {
+                        Size = "20",
+                        JustificationType = WordJustificationType.Both
+                    }
+                });
+            }
+            List<string> head = new List<string>
+            {
+                "№ з.к.", "ФИО", "Основа"
+            };
+            CreateTable(head);
+            foreach (var items in model.Items)
+            {
+                CreateRow(new List<string> { items.Item1, items.Item2, items.Item3.ToString() }, false);            
+            }
+            CreateParagraph(new WordParagraph
+            {
+                Texts = new List<(string, WordTextProperties)> {
+                (" ", new WordTextProperties { Bold = true, Size = "20", })},
+                TextProperties = new WordTextProperties
+                {
+                    Size = "20",
+                    JustificationType = WordJustificationType.Both
+                }
+            });
+            foreach (var p in model.Footer)
+            {
+                CreateParagraph(new WordParagraph
+                {
+                    Texts = new List<(string, WordTextProperties)> {
+                (p, new WordTextProperties { Bold = false, Size = "20", })},
+                    TextProperties = new WordTextProperties
+                    {
+                        Size = "20",
+                        JustificationType = WordJustificationType.Both
+                    }
+                });
+            }
+            SaveWord();
+        }
         public void CreatePlanDoc(ReportPlanViewModel model, string filename)
         {
             CreateWord(filename);

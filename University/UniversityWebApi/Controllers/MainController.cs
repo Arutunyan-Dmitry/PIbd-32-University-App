@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Mvc;
 using UniversityBusinessLogic.MailWorker;
 using UniversityContracts.BindingModels;
 using UniversityContracts.BusinessLogicContracts;
@@ -44,7 +45,7 @@ namespace UniversityWebApi.Controllers
             if (objectsOnPage < 1) { objectsOnPage = 5; }
             _report = report;
         }
-       
+
         #region COMMON METHODS
         //------------------------------Filtered Lists----------------------------
         [HttpGet]
@@ -132,7 +133,7 @@ namespace UniversityWebApi.Controllers
         { TeacherId = id });
         [HttpGet]
         public List<MessageViewModel> GetMessagesByStatus(int id, Status status) => _message.Read(new MessageBindingModel
-        { TeacherId = id, Status = status});
+        { TeacherId = id, Status = status });
         [HttpGet]
         public List<MessageViewModel> GetMessagesByStatusAndType(int id, ReportTypes typeReport, Status status) => _message.Read(new MessageBindingModel
         { TeacherId = id, Status = status, ReportType = typeReport });
@@ -301,6 +302,8 @@ namespace UniversityWebApi.Controllers
         public void CreateOrUpdatePlan(PlanBindingModel model) => _plan.CreateOrUpdate(model);
         [HttpPost]
         public void CreateMessage(MessageBindingModel model) => _message.CreateMessage(model);
+        [HttpPost]
+        public void SendGroupReport(Tuple<int> id) => _report.SendGroupReport(id.Item1);
         //------------------------------     C-U      ----------------------------
 
         //------------------------------     Put      ----------------------------       
@@ -469,8 +472,17 @@ namespace UniversityWebApi.Controllers
             _group.Delete(model);
             return true;
         }
+        [HttpGet]
+        public bool DeleteMessage(int id)
+        {
+            _message.Delete(new MessageBindingModel
+            {
+                Id = id
+            });
+            return true;
+        }
         //------------------------------      D       ----------------------------
         #endregion
 
+        }
     }
-}

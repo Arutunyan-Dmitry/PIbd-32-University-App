@@ -94,9 +94,9 @@ namespace UniversityBusinessLogic.BusinessLogic
             {
                 throw new Exception("Сообщение не найдено");
             }
-            if (message.Status != Status.Активен)
+            if (message.Status == Status.Проверяется)
             {
-                throw new Exception("По данному запросу уже выполнен отчёт");
+                throw new Exception("Статус сообщения \"проверяется\"");
             }
             _messageStorage.Delete(new MessageBindingModel { Id = model.Id });
         }
